@@ -142,7 +142,7 @@ model sysdiagrams {
 
 model token {
   UserID       Int
-  refreshToken String @db.NVarChar(150)
+  refreshToken String @db.NVarChar(350)
   tokenID      Int    @id(map: "PK_token") @default(autoincrement())
   users        users  @relation(fields: [UserID], references: [UserID], onUpdate: NoAction, map: "FK_token_users")
 }
@@ -150,12 +150,12 @@ model token {
 model users {
   UserID         Int         @id(map: "PK_users") @unique(map: "index_UserID") @default(autoincrement())
   UserEmail      String      @unique(map: "UQ__users__08638DF8F78A2DE1") @db.VarChar(100)
-  UserPassword   String      @db.VarChar(30)
+  UserPassword   String      @db.VarChar(270)
   UserAddressID  Int?
   UserPhone      Decimal?    @db.Decimal(14, 0)
   Role           Int         @default(0, map: "DefaultRole") @db.TinyInt
   IsActivated    Boolean     @default(false, map: "DF_users_IsActivated")
-  ActivationLink String?     @db.VarChar(150)
+  ActivationLink String      @unique @db.VarChar(250)
   basket         basket[]
   comments       comments[]
   Favorites      Favorites[]

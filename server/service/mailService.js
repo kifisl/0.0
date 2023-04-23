@@ -14,9 +14,11 @@ class MailService {
   }
 
   async sendActivationMail(to, link) {
+    const reciver = to.toString();
+    //console.log(typeof to);
     await this.transporter.sendMail({
       from: "barry87@ethereal.email",
-      to: "barry87@ethereal.email",
+      to: reciver,
       subject: "Активация аккаунта на " + process.env.API_URL,
       text: "",
       html: `

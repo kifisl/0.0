@@ -11,7 +11,6 @@ class TokenService {
     const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET, {
       expiresIn: "30d",
     });
-
     return {
       accessToken,
       refreshToken,
@@ -25,7 +24,6 @@ class TokenService {
       },
     });
 
-    console.log(JSON.stringify(tokenData));
     if (JSON.stringify(tokenData) != "[]") {
       tokenData.refreshToken = refreshToken;
       return conn.token.update({
