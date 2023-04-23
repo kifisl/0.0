@@ -18,20 +18,21 @@ class TokenService {
   }
 
   async saveToken(userId, refreshToken) {
-    const tokenData = await conn.token.findMany({
+    const tokenData = await conn.token.findUnique({
       where: {
         UserID: userId,
       },
     });
-
+    console.log(parseInt(tokenData.tokenID));
     if (JSON.stringify(tokenData) != "[]") {
       tokenData.refreshToken = refreshToken;
       return conn.token.update({
         data: {
           refreshToken: refreshToken,
+          UserID: userId,
         },
         where: {
-          UserID: userId,
+          tokenID: tokenData.tokenID,
         },
       });
     }

@@ -8,6 +8,9 @@ const tokenService = require("./tokenService");
 const UserDto = require("../dtos/user_dto");
 const ApiError = require("../exceptions/api_error");
 
+const UserModel = require("../models/userModel");
+const method = new UserModel();
+
 class UserService {
   async registration(email, password) {
     //console.log(email, password);
@@ -61,6 +64,37 @@ class UserService {
         IsActivated: true,
       },
     });
+  }
+
+  async login(email, password) {
+    const user = method.getUserByEmail(conn, email).then(async (user) => {
+      if (JSON.stringify(user) == "null") {
+        throw ApiError.BadRequest(
+          `Пользователь с почтовым адресом ${email} не был найден`
+        );
+      }
+    });
+
+    console.log(JSON.stringify(user.UserPassword));
+    const isPassEquals = await bcrypt.compare(password, user.UserPassword);
+    if (!isPassEquals) {
+      throw ApiError.BadRequest(`Неверный пароль`);
+    }
+    const userDto = new UserDto(user);
+    const tokens = tokenService.generateTokens({ ...userDto });
+    await tokenService.saveToken(userDto.id, tokens.refreshToken);
+
+    return {
+      ...tokens,
+      user: userDto,
+    };
+
+    // console.log(JSON.stringify(user));
+    // if (JSON.stringify(user) == {}) {
+    //   throw ApiError.BadRequest(
+    //     `Пользователь с почтовым адресом ${email} не был найден`
+    //   );
+    // }
   }
 }
 
