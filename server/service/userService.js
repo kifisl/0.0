@@ -13,7 +13,6 @@ const method = new UserModel();
 
 class UserService {
   async registration(email, password) {
-    //console.log(email, password);
     const candidate = conn.users.findMany({
       where: { UserEmail: email },
     });
@@ -67,15 +66,15 @@ class UserService {
   }
 
   async login(email, password) {
-    const user = method.getUserByEmail(conn, email).then(async (user) => {
-      if (JSON.stringify(user) == "null") {
-        throw ApiError.BadRequest(
-          `Пользователь с почтовым адресом ${email} не был найден`
-        );
-      }
+    const user = await conn.users.findUnique({
+      where: { UserEmail: email },
     });
 
-    console.log(JSON.stringify(user.UserPassword));
+    if (user == null) {
+      throw ApiError.BadRequest(
+        `Пользователь с почтовым адресом ${email} не был найден`
+      );
+    }
     const isPassEquals = await bcrypt.compare(password, user.UserPassword);
     if (!isPassEquals) {
       throw ApiError.BadRequest(`Неверный пароль`);
@@ -88,13 +87,34 @@ class UserService {
       ...tokens,
       user: userDto,
     };
+  }
 
-    // console.log(JSON.stringify(user));
-    // if (JSON.stringify(user) == {}) {
-    //   throw ApiError.BadRequest(
-    //     `Пользователь с почтовым адресом ${email} не был найден`
-    //   );
-    // }
+  async logout(refreshToken) {
+    const token = await tokenService.removeToken(refreshToken);
+    return token;
+  }
+
+  async refresh(refreshToken){
+    if(!refreshToken){
+      throw ApiError.UnathorizedError();
+    }
+
+    const userData=tokenService.validateRefreshToken(refreshToken);
+    const tokenFromDB=await tokenService.findToken(refreshToken);
+    if(!userData || tokenFromDB!=null){
+      throw ApiError.UnathorizedError();
+    }
+    const user= await conn.users.findUnique({
+      where: {UserID: userData.UserID}
+    })
+    const userDto = new UserDto(user);
+    const tokens = tokenService.generateTokens({ ...userDto });
+    await tokenService.saveToken(userDto.id, tokens.refreshToken);
+
+    return {
+      ...tokens,
+      user: userDto,
+    };
   }
 }
 

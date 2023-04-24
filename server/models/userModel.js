@@ -1,8 +1,10 @@
 class userModel {
   getUserByEmail(conn, email) {
-    return conn.users.findUnique({
+    const result = conn.users.findUnique({
       where: { UserEmail: email },
     });
+    console.log(result.UserPassword);
+    return result.UserPassword;
   }
 }
 

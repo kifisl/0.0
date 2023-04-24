@@ -142,7 +142,7 @@ model sysdiagrams {
 
 model token {
   UserID       Int    @unique
-  refreshToken String @db.NVarChar(350)
+  refreshToken String @db.NVarChar(350) @unique
   tokenID      Int    @id(map: "PK_token") @unique @default(autoincrement())
   users        users  @relation(fields: [UserID], references: [UserID], onUpdate: NoAction, map: "FK_token_users")
 }
