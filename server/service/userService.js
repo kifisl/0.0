@@ -94,19 +94,21 @@ class UserService {
     return token;
   }
 
-  async refresh(refreshToken){
-    if(!refreshToken){
+  async refresh(refreshToken) {
+    if (!refreshToken) {
+      console.log("service refresh");
       throw ApiError.UnathorizedError();
     }
 
-    const userData=tokenService.validateRefreshToken(refreshToken);
-    const tokenFromDB=await tokenService.findToken(refreshToken);
-    if(!userData || tokenFromDB!=null){
+    const userData = tokenService.validateRefreshToken(refreshToken);
+    const tokenFromDB = await tokenService.findToken(refreshToken);
+
+    if (!userData || tokenFromDB == null) {
       throw ApiError.UnathorizedError();
     }
-    const user= await conn.users.findUnique({
-      where: {UserID: userData.UserID}
-    })
+    const user = await conn.users.findUnique({
+      where: { UserID: tokenFromDB.UserID },
+    });
     const userDto = new UserDto(user);
     const tokens = tokenService.generateTokens({ ...userDto });
     await tokenService.saveToken(userDto.id, tokens.refreshToken);
@@ -115,6 +117,11 @@ class UserService {
       ...tokens,
       user: userDto,
     };
+  }
+
+  async getAllUsers() {
+    const users = await conn.users.findMany();
+    return users;
   }
 }
 
