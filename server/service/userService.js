@@ -16,7 +16,7 @@ class UserService {
     const candidate = conn.users.findMany({
       where: { UserEmail: email },
     });
-    console.log(JSON.stringify(candidate));
+
     if (JSON.stringify(candidate) != "{}") {
       throw ApiError.BadRequest(
         `Пользователь с почтовым адресом ${email} уже существует`
