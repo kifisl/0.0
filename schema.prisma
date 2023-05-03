@@ -1,0 +1,171 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model address {
+  AddressID Int      @id(map: "PK_address") @unique(map: "index_AddressID") @default(autoincrement())
+  Country   String?  @db.VarChar(20)
+  City      String?  @db.VarChar(50)
+  Address   String?  @db.VarChar(50)
+  orders    orders[]
+  users     users[]
+
+  @@index([Address], map: "index_Address")
+  @@index([City], map: "index_City")
+  @@index([Country], map: "index_Country")
+}
+
+model basket {
+  BasketID  Int       @id(map: "PK_basket") @unique(map: "index_BasketID") @default(autoincrement())
+  UserID    Int?
+  ProductID Int?
+  products  products? @relation(fields: [ProductID], references: [ProductID], onDelete: NoAction, onUpdate: NoAction, map: "FK_basketProductFK")
+  users     users?    @relation(fields: [UserID], references: [UserID], onDelete: NoAction, onUpdate: NoAction, map: "FK_basketUserFK")
+
+  @@index([ProductID], map: "index_BasketProductID")
+  @@index([UserID], map: "index_BasketUserID")
+}
+
+model comments {
+  CommentID        Int       @id(map: "PK_comments") @unique(map: "index_CommentID") @default(autoincrement())
+  CommentProductID Int?
+  CommentUserID    Int?
+  Comment          String?   @db.VarChar(1000)
+  products         products? @relation(fields: [CommentProductID], references: [ProductID], onDelete: NoAction, onUpdate: NoAction, map: "FK_CommentProductPK")
+  users            users?    @relation(fields: [CommentUserID], references: [UserID], onDelete: NoAction, onUpdate: NoAction, map: "FK_CommentUserPK")
+
+  @@index([Comment], map: "index_Comment")
+  @@index([CommentProductID], map: "index_CommentProductID")
+  @@index([CommentUserID], map: "index_CommentUserID")
+  @@index([CommentProductID], map: "IX_FK_CommentProductPK")
+}
+
+model Favorites {
+  FavoriteID Int       @id(map: "PK_favorites") @unique(map: "index_FavoriteID") @default(autoincrement())
+  UserID     Int?
+  ProductID  Int?
+  products   products? @relation(fields: [ProductID], references: [ProductID], onDelete: NoAction, onUpdate: NoAction, map: "FK_FavoriteProductFK")
+  users      users?    @relation(fields: [UserID], references: [UserID], onDelete: NoAction, onUpdate: NoAction, map: "FK_favoritesUserFK")
+
+  @@index([ProductID], map: "index_FavoriteProductID")
+  @@index([UserID], map: "index_FavoriteUserID")
+}
+
+model orderdetails {
+  DetailsID        Int       @id(map: "PK_orderdetails") @unique(map: "index_DetailsID") @default(autoincrement())
+  DetailsOrderID   Int?
+  DetailsProductID Int?
+  orders           orders?   @relation(fields: [DetailsOrderID], references: [OrderID], onDelete: NoAction, onUpdate: NoAction, map: "FK_DetailsOrderFK")
+  products         products? @relation(fields: [DetailsProductID], references: [ProductID], onDelete: NoAction, onUpdate: NoAction, map: "FK_DetailsProductFK")
+
+  @@index([DetailsOrderID], map: "index_DetailsOrderID")
+  @@index([DetailsProductID], map: "index_DetailsProductID")
+  @@index([DetailsOrderID], map: "IX_FK_DetailsOrderFK")
+  @@index([DetailsProductID], map: "IX_FK_DetailsProductFK")
+}
+
+model orders {
+  OrderID             Int            @id(map: "PK_orders") @unique(map: "index_OrderID") @default(autoincrement())
+  OrderUserID         Int?
+  OrderDate           DateTime?      @db.DateTime
+  OrderTrackingNumber String?        @db.VarChar(30)
+  OrderAmount         Float?
+  OrderAddressID      Int?
+  OrderStatus         Int?           @db.TinyInt
+  orderdetails        orderdetails[]
+  address             address?       @relation(fields: [OrderAddressID], references: [AddressID], onDelete: NoAction, onUpdate: NoAction, map: "FK_OrdersAddressFK")
+  users               users?         @relation(fields: [OrderUserID], references: [UserID], onDelete: NoAction, onUpdate: NoAction, map: "FK_OrdersUsersFK")
+
+  @@index([OrderAddressID], map: "index_OrderAddressID")
+  @@index([OrderAmount], map: "index_OrderAmount")
+  @@index([OrderDate], map: "index_OrderDate")
+  @@index([OrderStatus], map: "index_OrderStatus")
+  @@index([OrderUserID], map: "index_OrderUserID")
+  @@index([OrderTrackingNumber], map: "index_TrackingNumber")
+  @@index([OrderUserID], map: "IX_FK_OrdersUsersFK")
+}
+
+model productcategories {
+  CategoryID                                              Int                 @id(map: "PK_productcategories") @unique(map: "index_CategoryID") @default(autoincrement())
+  CategoryName                                            String?             @db.VarChar(50)
+  SubCategoryID                                           Int?
+  productcategories                                       productcategories?  @relation("productcategoriesToproductcategories", fields: [SubCategoryID], references: [CategoryID], onDelete: NoAction, onUpdate: NoAction, map: "FK_SubCategoriesFK")
+  other_productcategories                                 productcategories[] @relation("productcategoriesToproductcategories")
+  products_products_ProductCategoryToproductcategories    products[]          @relation("products_ProductCategoryToproductcategories")
+  products_products_ProductSubCategoryToproductcategories products[]          @relation("products_ProductSubCategoryToproductcategories")
+
+  @@index([CategoryName], map: "index_CategoryName")
+  @@index([SubCategoryID], map: "index_SubCategoryID")
+}
+
+model products {
+  ProductID                                                        Int                @id(map: "PK_products") @unique(map: "index_ProductID") @default(autoincrement())
+  ProductCategory                                                  Int?
+  ProductName                                                      String?            @db.VarChar(50)
+  ProductWeight                                                    Int?
+  ProductShortDesc                                                 String?            @db.NVarChar(200)
+  ProductImage                                                     Bytes?
+  ProductStock                                                     Int?
+  ProductPrice                                                     Float?
+  ProductSubCategory                                               Int?
+  ProductIsAvailable                                               Boolean?           @default(true, map: "DF_products_ProductIsAvailable")
+  basket                                                           basket[]
+  comments                                                         comments[]
+  Favorites                                                        Favorites[]
+  orderdetails                                                     orderdetails[]
+  productcategories_products_ProductCategoryToproductcategories    productcategories? @relation("products_ProductCategoryToproductcategories", fields: [ProductCategory], references: [CategoryID], onDelete: NoAction, onUpdate: NoAction, map: "FK_ProductCategoriesFK")
+  productcategories_products_ProductSubCategoryToproductcategories productcategories? @relation("products_ProductSubCategoryToproductcategories", fields: [ProductSubCategory], references: [CategoryID], onDelete: NoAction, onUpdate: NoAction, map: "FK_ProductSubCategoriesFK")
+
+  @@index([ProductCategory], map: "index_ProductCategory")
+  @@index([ProductName], map: "index_ProductName")
+  @@index([ProductPrice], map: "index_ProductPrice")
+  @@index([ProductShortDesc], map: "index_ProductShortDesc")
+  @@index([ProductStock], map: "index_ProductStock")
+  @@index([ProductWeight], map: "index_ProductWeight")
+  @@index([ProductCategory], map: "IX_FK_ProductCategoriesFK")
+}
+
+model sysdiagrams {
+  name         String @db.NVarChar(128)
+  principal_id Int
+  diagram_id   Int    @id(map: "PK__sysdiagr__C2B05B6108BE5BAA") @default(autoincrement())
+  version      Int?
+  definition   Bytes?
+
+  @@unique([principal_id, name], map: "UK_principal_name")
+}
+
+model token {
+  UserID       Int    @unique
+  refreshToken String @db.NVarChar(350) @unique
+  tokenID      Int    @id(map: "PK_token") @unique @default(autoincrement())
+  users        users  @relation(fields: [UserID], references: [UserID], onUpdate: NoAction, map: "FK_token_users")
+}
+
+model users {
+  UserID         Int         @id(map: "PK_users") @unique(map: "index_UserID") @default(autoincrement())
+  UserEmail      String      @unique(map: "UQ__users__08638DF8F78A2DE1") @db.VarChar(100)
+  UserPassword   String      @db.VarChar(270)
+  UserAddressID  Int?
+  UserPhone      Decimal?    @db.Decimal(14, 0)
+  Role           Int         @default(0, map: "DefaultRole") @db.TinyInt
+  IsActivated    Boolean     @default(false, map: "DF_users_IsActivated")
+  ActivationLink String      @unique @db.VarChar(250)
+  basket         basket[]
+  comments       comments[]
+  Favorites      Favorites[]
+  orders         orders[]
+  token          token[]
+  address        address?    @relation(fields: [UserAddressID], references: [AddressID], onDelete: NoAction, onUpdate: NoAction, map: "FK_UserAddressFK")
+
+  @@index([UserAddressID], map: "index_UserAddressID")
+  @@index([UserEmail], map: "index_UserEmail")
+  @@index([UserPassword], map: "index_UserPassword")
+  @@index([UserPhone], map: "index_UserPhone")
+  @@index([Role], map: "index_UserRole")
+}

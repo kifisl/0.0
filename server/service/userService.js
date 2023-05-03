@@ -96,7 +96,7 @@ class UserService {
 
   async refresh(refreshToken) {
     if (!refreshToken) {
-      console.log("service refresh");
+      //console.log("service refresh");
       throw ApiError.UnathorizedError();
     }
 
@@ -120,6 +120,7 @@ class UserService {
   }
 
   async getAllUsers() {
+    console.log("userservice getall");
     const users = await conn.users.findMany();
     return users;
   }

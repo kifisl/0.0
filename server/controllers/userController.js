@@ -80,6 +80,7 @@ class UserController {
       const users = await userService.getAllUsers();
       res.json(users);
     } catch (e) {
+      console.log("controller");
       next(e);
     }
   }
