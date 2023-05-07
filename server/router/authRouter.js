@@ -11,10 +11,12 @@ router.post(
   body("password").isLength({ min: 3, max: 32 }),
   userController.registration
 );
+
 router.post("/login", userController.login);
 router.post("/logout", userController.logout);
 router.get("/activate/:link", userController.activate);
 router.get("/refresh", userController.refresh);
 router.get("/users", authMiddleware, userController.getUsers);
+router.get("/auth", userController.check);
 
 module.exports = router;

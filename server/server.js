@@ -2,11 +2,11 @@ const express = require("express");
 require("dotenv").config();
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-const router = require("./router/authRouter");
 const errorMiddleware = require("./middlewares/error-middleware");
 const PORT = process.env.PORT || 5000;
 const { PrismaClient } = require("@prisma/client");
 const conn = new PrismaClient();
+const router = require("./router/mainRouter");
 
 const app = express();
 

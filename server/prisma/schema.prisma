@@ -21,14 +21,24 @@ model address {
 }
 
 model basket {
-  BasketID  Int       @id(map: "PK_basket") @unique(map: "index_BasketID") @default(autoincrement())
-  UserID    Int?
-  ProductID Int?
-  products  products? @relation(fields: [ProductID], references: [ProductID], onDelete: NoAction, onUpdate: NoAction, map: "FK_basketProductFK")
-  users     users?    @relation(fields: [UserID], references: [UserID], onDelete: NoAction, onUpdate: NoAction, map: "FK_basketUserFK")
+  BasketID      Int             @id(map: "PK_basket") @unique(map: "index_BasketID") @default(autoincrement())
+  UserID        Int?
+  BasketAmount  Float?
+  users         users?          @relation(fields: [UserID], references: [UserID], onDelete: NoAction, onUpdate: NoAction, map: "FK_basketUserFK")
+  basketproduct basketproduct[]
 
-  @@index([ProductID], map: "index_BasketProductID")
   @@index([UserID], map: "index_BasketUserID")
+}
+
+model basketproduct {
+  BasketProductID Int       @id(map: "PK_basketproduct") @unique(map: "index_BasketProductID") @default(autoincrement())
+  ProductID       Int?
+  BasketID        Int?
+  Quantity        Int?      @default(1)
+  basket          basket?   @relation(fields: [BasketID], references: [BasketID], onDelete: NoAction, onUpdate: NoAction, map: "FK_basketbasketFK")
+  products        products? @relation(fields: [ProductID], references: [ProductID], onDelete: NoAction, onUpdate: NoAction, map: "FK_basketProductFK")
+
+  @@index([ProductID], map: "index_BasketProductProductID")
 }
 
 model comments {
@@ -60,6 +70,7 @@ model orderdetails {
   DetailsID        Int       @id(map: "PK_orderdetails") @unique(map: "index_DetailsID") @default(autoincrement())
   DetailsOrderID   Int?
   DetailsProductID Int?
+  Quantity         Int?
   orders           orders?   @relation(fields: [DetailsOrderID], references: [OrderID], onDelete: NoAction, onUpdate: NoAction, map: "FK_DetailsOrderFK")
   products         products? @relation(fields: [DetailsProductID], references: [ProductID], onDelete: NoAction, onUpdate: NoAction, map: "FK_DetailsProductFK")
 
@@ -91,35 +102,41 @@ model orders {
 }
 
 model productcategories {
-  CategoryID                                              Int                 @id(map: "PK_productcategories") @unique(map: "index_CategoryID") @default(autoincrement())
-  CategoryName                                            String?             @db.VarChar(50)
-  SubCategoryID                                           Int?
-  productcategories                                       productcategories?  @relation("productcategoriesToproductcategories", fields: [SubCategoryID], references: [CategoryID], onDelete: NoAction, onUpdate: NoAction, map: "FK_SubCategoriesFK")
-  other_productcategories                                 productcategories[] @relation("productcategoriesToproductcategories")
-  products_products_ProductCategoryToproductcategories    products[]          @relation("products_ProductCategoryToproductcategories")
-  products_products_ProductSubCategoryToproductcategories products[]          @relation("products_ProductSubCategoryToproductcategories")
+  CategoryID                                           Int                    @id(map: "PK_productcategories") @unique(map: "index_CategoryID") @default(autoincrement())
+  CategoryName                                         String?                @db.VarChar(50)
+  products_products_ProductCategoryToproductcategories products[]             @relation("products_ProductCategoryToproductcategories")
+  productsubcategories                                 productsubcategories[]
 
   @@index([CategoryName], map: "index_CategoryName")
-  @@index([SubCategoryID], map: "index_SubCategoryID")
+}
+
+model productsubcategories {
+  SubCategoryID                                              Int                @id(map: "PK_producsubtcategories") @unique(map: "index_SubCategoryID") @default(autoincrement())
+  SubCategoryName                                            String?            @db.VarChar(50)
+  ParentCategoryID                                           Int?
+  productcategories                                          productcategories? @relation(fields: [ParentCategoryID], references: [CategoryID], onUpdate: NoAction, map: "FK_parentCategory")
+  products_products_ProductSubCategoryToproductsubcategories products[]         @relation("products_ProductSubCategoryToproductsubcategories")
+
+  @@index([SubCategoryName], map: "index_SubCategoryName")
 }
 
 model products {
-  ProductID                                                        Int                @id(map: "PK_products") @unique(map: "index_ProductID") @default(autoincrement())
-  ProductCategory                                                  Int?
-  ProductName                                                      String?            @db.VarChar(50)
-  ProductWeight                                                    Int?
-  ProductShortDesc                                                 String?            @db.NVarChar(200)
-  ProductImage                                                     Bytes?
-  ProductStock                                                     Int?
-  ProductPrice                                                     Float?
-  ProductSubCategory                                               Int?
-  ProductIsAvailable                                               Boolean?           @default(true, map: "DF_products_ProductIsAvailable")
-  basket                                                           basket[]
-  comments                                                         comments[]
-  Favorites                                                        Favorites[]
-  orderdetails                                                     orderdetails[]
-  productcategories_products_ProductCategoryToproductcategories    productcategories? @relation("products_ProductCategoryToproductcategories", fields: [ProductCategory], references: [CategoryID], onDelete: NoAction, onUpdate: NoAction, map: "FK_ProductCategoriesFK")
-  productcategories_products_ProductSubCategoryToproductcategories productcategories? @relation("products_ProductSubCategoryToproductcategories", fields: [ProductSubCategory], references: [CategoryID], onDelete: NoAction, onUpdate: NoAction, map: "FK_ProductSubCategoriesFK")
+  ProductID                                                              Int                   @id(map: "PK_products") @unique(map: "index_ProductID") @default(autoincrement())
+  ProductCategory                                                        Int?
+  ProductName                                                            String?               @db.VarChar(50)
+  ProductWeight                                                          Int?
+  ProductShortDesc                                                       String?               @db.NVarChar(200)
+  ProductImage                                                           Bytes?
+  ProductStock                                                           Int?
+  ProductPrice                                                           Float?
+  ProductSubCategory                                                     Int?
+  ProductIsAvailable                                                     Boolean?              @default(true, map: "DF_products_ProductIsAvailable")
+  basketproduct                                                          basketproduct[]
+  comments                                                               comments[]
+  Favorites                                                              Favorites[]
+  orderdetails                                                           orderdetails[]
+  productcategories_products_ProductCategoryToproductcategories          productcategories?    @relation("products_ProductCategoryToproductcategories", fields: [ProductCategory], references: [CategoryID], onDelete: NoAction, onUpdate: NoAction, map: "FK_ProductCategoriesFK")
+  productsubcategories_products_ProductSubCategoryToproductsubcategories productsubcategories? @relation("products_ProductSubCategoryToproductsubcategories", fields: [ProductSubCategory], references: [SubCategoryID], onDelete: NoAction, onUpdate: NoAction, map: "FK_ProductSubCategoriesFK")
 
   @@index([ProductCategory], map: "index_ProductCategory")
   @@index([ProductName], map: "index_ProductName")
@@ -142,7 +159,7 @@ model sysdiagrams {
 
 model token {
   UserID       Int    @unique
-  refreshToken String @db.NVarChar(350) @unique
+  refreshToken String @unique @db.NVarChar(350)
   tokenID      Int    @id(map: "PK_token") @unique @default(autoincrement())
   users        users  @relation(fields: [UserID], references: [UserID], onUpdate: NoAction, map: "FK_token_users")
 }

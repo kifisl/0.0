@@ -20,6 +20,7 @@ class UserController {
         maxAge: 30 * 24 * 60 * 60 * 1000,
         httpOnly: true,
       });
+      res.cookie("userID", userData.user.id);
       return res.json(userData);
     } catch (e) {
       next(e);
@@ -34,6 +35,7 @@ class UserController {
         maxAge: 30 * 24 * 60 * 60 * 1000,
         httpOnly: true,
       });
+      res.cookie("userID", userData.user.id);
       return res.json(userData);
     } catch (e) {
       next(e);
@@ -69,6 +71,7 @@ class UserController {
         maxAge: 30 * 24 * 60 * 60 * 1000,
         httpOnly: true,
       });
+      res.cookie("userID", userData.user.id);
       return res.json(userData);
     } catch (e) {
       next(e);
@@ -80,10 +83,11 @@ class UserController {
       const users = await userService.getAllUsers();
       res.json(users);
     } catch (e) {
-      console.log("controller");
       next(e);
     }
   }
+
+  async check(req, res) {}
 }
 
 module.exports = new UserController();

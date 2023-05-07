@@ -1,0 +1,22 @@
+BEGIN TRY
+
+BEGIN TRAN;
+
+-- AlterTable
+ALTER TABLE [dbo].[basketproduct] ADD [BasketID] INT;
+
+-- AddForeignKey
+ALTER TABLE [dbo].[basketproduct] ADD CONSTRAINT [FK_basketbasketFK] FOREIGN KEY ([BasketID]) REFERENCES [dbo].[basket]([BasketID]) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+COMMIT TRAN;
+
+END TRY
+BEGIN CATCH
+
+IF @@TRANCOUNT > 0
+BEGIN
+    ROLLBACK TRAN;
+END;
+THROW
+
+END CATCH
