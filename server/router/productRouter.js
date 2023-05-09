@@ -2,6 +2,8 @@ const Router = require("express");
 const router = new Router();
 const multer = require("multer");
 const productController = require("../controllers/productController");
+const checkRole = require("../middlewares/role-middleware");
+
 var storage = multer.diskStorage({
   destination: (req, file, cd) => {
     cd(null, "public/img");
@@ -12,10 +14,15 @@ var storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
-router.post("/add", productController.addProduct);
+router.post("/add", checkRole(1), productController.addProduct);
 router.post("/", productController.getProducts);
 router.post("/getById", productController.getProductByID);
-router.post("/edit", upload.single("file"), productController.editProduct);
+router.post(
+  "/edit",
+  checkRole(1),
+  upload.single("file"),
+  productController.editProduct
+);
 router.post("/getPag", productController.getPagination);
 
 module.exports = router;
