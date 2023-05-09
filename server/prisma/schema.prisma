@@ -87,7 +87,7 @@ model orders {
   OrderTrackingNumber String?        @db.VarChar(30)
   OrderAmount         Float?
   OrderAddressID      Int?
-  OrderStatus         Int?           @db.TinyInt
+  OrderStatus         Int?           @default(1) @db.TinyInt
   orderdetails        orderdetails[]
   address             address?       @relation(fields: [OrderAddressID], references: [AddressID], onDelete: NoAction, onUpdate: NoAction, map: "FK_OrdersAddressFK")
   users               users?         @relation(fields: [OrderUserID], references: [UserID], onDelete: NoAction, onUpdate: NoAction, map: "FK_OrdersUsersFK")
@@ -126,7 +126,7 @@ model products {
   ProductName                                                            String?               @db.VarChar(50)
   ProductWeight                                                          Int?
   ProductShortDesc                                                       String?               @db.NVarChar(200)
-  ProductImage                                                           Bytes?
+  ProductImage                                                           String?
   ProductStock                                                           Int?
   ProductPrice                                                           Float?
   ProductSubCategory                                                     Int?

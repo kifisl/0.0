@@ -7,5 +7,6 @@ module.exports = class UserDto {
     this.email = model.UserEmail;
     this.id = model.UserID;
     this.isActivated = model.IsActivated;
+    this.role = model.role;
   }
 };

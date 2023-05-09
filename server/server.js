@@ -11,6 +11,7 @@ const router = require("./router/mainRouter");
 const app = express();
 
 app.use(express.json());
+app.use(express.static("public/img"));
 app.use(cookieParser());
 app.use(
   cors({

@@ -86,8 +86,6 @@ class UserController {
       next(e);
     }
   }
-
-  async check(req, res) {}
 }
 
 module.exports = new UserController();

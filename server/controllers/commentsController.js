@@ -8,8 +8,8 @@ class commentsController {
       let userId = req.cookies.userID;
       const addedComment = await conn.comments.create({
         data: {
-          CommentProductID: productID,
-          CommentUserID: userId,
+          CommentProductID: Number.parseInt(productID),
+          CommentUserID: Number.parseInt(userId),
           Comment: body,
         },
       });

@@ -36,9 +36,10 @@ class UserService {
       `${process.env.API_URL}/api/activate/${activationLink}`
     );
 
-    const userDto = new UserDto(user); //id, email, isActivated
+    const userDto = new UserDto(user); //id, email, isActivated, role
     const tokens = tokenService.generateTokens({ ...userDto });
     await tokenService.saveToken(userDto.id, tokens.refreshToken);
+    console.log(userDto)
 
     return {
       ...tokens,

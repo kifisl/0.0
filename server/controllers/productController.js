@@ -16,7 +16,7 @@ class productController {
       });
       res.status(200).json({ addedProduct });
     } catch (e) {
-      res.status(400).json({ e: err.message });
+      res.status(400).json({ e: e.message });
     }
   }
 
@@ -25,7 +25,7 @@ class productController {
       const products = await conn.products.findMany({});
       res.status(200).json({ products });
     } catch (e) {
-      res.status(400).json({ e: err.message });
+      res.status(400).json({ e: e.message });
     }
   }
 

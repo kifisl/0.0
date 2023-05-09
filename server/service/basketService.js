@@ -9,15 +9,23 @@ class BasketService {
       },
       include: {
         basketproduct: {
-          select: {
-            ProductID: true,
-            Quantity: true,
+          // select: {
+          //   ProductID: true,
+          //   Quantity: true,
+          // },
+          include: {
+            products: {
+              select: {
+                ProductPrice: true,
+              },
+            },
           },
         },
       },
     });
 
     let newPrice = 0;
+    let i;
     for (i = 0; i < currentBasket.basketproduct.length; i++) {
       newPrice +=
         currentBasket.basketproduct[i].products.ProductPrice *

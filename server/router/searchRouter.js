@@ -1,12 +1,15 @@
 const Router = require("express");
 const router = new Router();
+const searchController = require("../controllers/searchController");
 
-router.get("/");
-router.get("/");
-router.get("/");
-router.get("/");
-router.post("/");
-router.post("/");
-router.post("/");
+router.get("/", searchController.testGet);
+router.get("/allCategories", searchController.findAllCategories);
+router.get("/allSubcategories", searchController.findAllSubcategories);
+router.post("/subcategoriesByCategory", searchController.refreshSubcategories);
+router.post("/productsByCategory", searchController.findProductsByCategory);
+router.post(
+  "/productsBySubcategory",
+  searchController.findProductsBySubCategory
+);
 
 module.exports = router;

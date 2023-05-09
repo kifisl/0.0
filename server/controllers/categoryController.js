@@ -16,7 +16,7 @@ class categoryController {
     }
   }
 
-  async getCategory(req, res) {
+  async getCategories(req, res) {
     try {
       const categories = await conn.productcategories.findMany({});
       res.status(200).json({ categories });
@@ -39,7 +39,7 @@ class categoryController {
     }
   }
 
-  async edit(req, res) {
+  async editCategory(req, res) {
     try {
       let { name, id } = req.body;
       const edited = await conn.productcategories.update({
@@ -54,7 +54,7 @@ class categoryController {
     }
   }
 
-  async delete(req, res) {
+  async deleteCategory(req, res) {
     try {
       let { id } = req.body;
       const deleted = await conn.productcategories.delete({

@@ -21,7 +21,7 @@ class basketController {
           data: {
             BasketID: basketCookie,
             ProductID: Number.parseInt(productID),
-            quantity: 1,
+            Quantity: 1,
           },
         });
 
@@ -56,7 +56,7 @@ class basketController {
       if (basketExist) {
         const updatedBasketIncr = await conn.basketproduct.update({
           where: {
-            BasketProductID: basketExist.BasketID,
+            BasketProductID: basketExist.BasketProductID,
           },
           data: {
             Quantity: {
@@ -64,7 +64,25 @@ class basketController {
             },
           },
         });
-        return res.status(200).json({ updatedBasketIncr });
+
+        const basketProductExists = await conn.products.findFirst({
+          where: {
+            ProductID: basketExist.ProductID,
+          },
+        });
+
+        const UpdatedAmount = await conn.basket.update({
+          where: {
+            BasketID: Number.parseInt(bsktID),
+          },
+          data: {
+            BasketAmount: {
+              increment: basketProductExists.ProductPrice,
+            },
+          },
+        });
+
+        return res.status(200).json({ UpdatedAmount });
       } else {
         const basketItemNew = await conn.basketproduct.create({
           data: {
@@ -89,7 +107,7 @@ class basketController {
             },
           },
         });
-        return res.status(200).json({ basketItemNew });
+        return res.status(200).json({ basketUpdatedAmount });
       }
     } catch (e) {
       res.status(400).json({ error: e.message });
@@ -102,12 +120,20 @@ class basketController {
 
       const currentBasket = await conn.basket.findFirst({
         where: {
-          UserID: userID,
+          UserID: Number.parseInt(userID),
         },
       });
+      console.log(currentBasket.BasketID);
       const basketItems = await conn.basketproduct.findMany({
         where: {
           BasketID: currentBasket.BasketID,
+        },
+        include: {
+          products: {
+            select: {
+              ProductName: true,
+            },
+          },
         },
       });
       return res.status(200).json({ basketItems });
@@ -145,8 +171,65 @@ class basketController {
             BasketProductID: basketproduct.BasketProductID,
           },
         });
-        return res.status(200).json({ deleted });
+
+        let result = basketService.recountPrice(basketproduct.BasketID);
+        return res.status(200).json({ result });
       }
+    } catch (e) {
+      res.status(400).json({ error: e.message });
+    }
+  }
+
+  async CreateOrder(req, res) {
+    try {
+      let userID = req.cookies.userID;
+      let time = new Date();
+      const currentBasket = await conn.basket.findFirst({
+        where: {
+          UserID: Number.parseInt(userID),
+        },
+        include: {
+          basketproduct: {
+            select: {
+              ProductID: true,
+              Quantity: true,
+            },
+          },
+        },
+      });
+
+      const newOrder = await conn.orders.create({
+        data: {
+          OrderUserID: Number.parseInt(userID),
+          OrderDate: new Date(),
+          OrderAmount: currentBasket.BasketAmount,
+        },
+      });
+
+      let i;
+      for (i = 0; i < currentBasket.basketproduct.length; i++) {
+        await conn.orderdetails.create({
+          data: {
+            DetailsProductID: currentBasket.basketproduct[i].ProductID,
+            DetailsOrderID: newOrder.OrderID,
+            Quantity: currentBasket.basketproduct[i].Quantity,
+          },
+        });
+      }
+      await conn.basketproduct.deleteMany({
+        where: {
+          BasketID: currentBasket.BasketID,
+        },
+      });
+
+      await conn.basket.deleteMany({
+        where: {
+          BasketID: currentBasket.BasketID,
+        },
+      });
+      res.clearCookie("basketID");
+
+      return res.status(200).json({ newOrder });
     } catch (e) {
       res.status(400).json({ error: e.message });
     }
