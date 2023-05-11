@@ -1,0 +1,5 @@
+const ADMIN_ROLE = 1;
+const USER_ROLE = 0;
+const DELIVERY_ROLE = 2;
+
+export { ADMIN_ROLE, USER_ROLE, DELIVERY_ROLE };

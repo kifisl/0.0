@@ -13,11 +13,11 @@ const method = new UserModel();
 
 class UserService {
   async registration(email, password) {
-    const candidate = conn.users.findMany({
+    const candidate = await conn.users.findMany({
       where: { UserEmail: email },
     });
-
-    if (JSON.stringify(candidate) != "{}") {
+    console.log(JSON.stringify(candidate));
+    if (JSON.stringify(candidate) != "[]") {
       throw ApiError.BadRequest(
         `Пользователь с почтовым адресом ${email} уже существует`
       );
@@ -33,13 +33,13 @@ class UserService {
     });
     await mailService.sendActivationMail(
       email,
-      `${process.env.API_URL}/api/activate/${activationLink}`
+      `${process.env.API_URL}/api/auth/activate/${activationLink}`
     );
 
     const userDto = new UserDto(user); //id, email, isActivated, role
     const tokens = tokenService.generateTokens({ ...userDto });
     await tokenService.saveToken(userDto.id, tokens.refreshToken);
-    console.log(userDto)
+    console.log(userDto);
 
     return {
       ...tokens,
@@ -67,9 +67,10 @@ class UserService {
   }
 
   async login(email, password) {
-    const user = await conn.users.findUnique({
+    const user = await conn.users.findFirst({
       where: { UserEmail: email },
     });
+    console.log(user);
 
     if (user == null) {
       throw ApiError.BadRequest(
@@ -77,6 +78,7 @@ class UserService {
       );
     }
     const isPassEquals = await bcrypt.compare(password, user.UserPassword);
+    console.log(isPassEquals);
     if (!isPassEquals) {
       throw ApiError.BadRequest(`Неверный пароль`);
     }
@@ -97,13 +99,11 @@ class UserService {
 
   async refresh(refreshToken) {
     if (!refreshToken) {
-      //console.log("service refresh");
       throw ApiError.UnathorizedError();
     }
 
     const userData = tokenService.validateRefreshToken(refreshToken);
     const tokenFromDB = await tokenService.findToken(refreshToken);
-
     if (!userData || tokenFromDB == null) {
       throw ApiError.UnathorizedError();
     }

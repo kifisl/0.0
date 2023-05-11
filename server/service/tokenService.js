@@ -73,7 +73,7 @@ class TokenService {
   }
 
   async findToken(refreshToken) {
-    const tokenData = await conn.token.findUnique({
+    const tokenData = await conn.token.findFirst({
       where: { refreshToken: refreshToken },
     });
     return tokenData;
