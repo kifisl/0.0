@@ -32,33 +32,33 @@ export const getServerSideProps = async (context) => {
 const Id = ({ data, comments }) => {
   const [showForm, setShowForm] = useState(false);
   const [comData, setComData] = useState("");
-  const [message, setMessage] = useState("");
-  const [authenticated, setAuthenticated] = useState(false);
-  const [role, setRole] = useState("");
-  const [newComms, setNewComms] = useState();
+  // const [message, setMessage] = useState("");
+  // const [authenticated, setAuthenticated] = useState(false);
+  // const [role, setRole] = useState("");
+  // const [newComms, setNewComms] = useState();
 
-  const router = useRouter();
+  // const router = useRouter();
 
-  useEffect(() => {
-    (async () => {
-      const response = await fetch("/v1/auth/refresh", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "Content-Type": "application/json",
-        },
-      });
-      const content = await response.json();
-      if (content.user) {
-        setMessage(content.user.email);
-        setRole(content.user.role);
-        console.log("true");
-        return setAuthenticated(true);
-      }
-      setAuthenticated(false);
-      console.log("false");
-    })();
-  });
+  // useEffect(() => {
+  //   (async () => {
+  //     const response = await fetch("/v1/auth/refresh", {
+  //       method: "GET",
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
+  //     const content = await response.json();
+  //     if (content.user) {
+  //       setMessage(content.user.email);
+  //       setRole(content.user.role);
+  //       console.log("true");
+  //       return setAuthenticated(true);
+  //     }
+  //     setAuthenticated(false);
+  //     console.log("false");
+  //   })();
+  // });
 
   const showForme = (e) => {
     e.preventDefault();
@@ -127,16 +127,16 @@ const Id = ({ data, comments }) => {
   }
 
   return (
-    <DefaultLayout auth={authenticated} role={role}>
+    <DefaultLayout>
       <div className={styles.b_content}>
         <div>
-          <h6>
+          {/* <h6>
             {
               data.product
                 .productcategories_products_ProductCategoryToproductcategories
                 .CategoryName
             }
-          </h6>
+          </h6> */}
         </div>
         <div>
           <h1>{data.product.ProductName}</h1>

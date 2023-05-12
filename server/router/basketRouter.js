@@ -6,4 +6,5 @@ router.post("/", basketController.addProductToBasket);
 router.get("/", basketController.getProductsInBasket);
 router.delete("/", basketController.removeItemFromBasket);
 router.post("/basketToOrder", basketController.CreateOrder);
+router.get("/get", basketController.GetBasket);
 module.exports = router;

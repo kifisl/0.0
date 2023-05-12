@@ -12,6 +12,27 @@ const Product = (props) => {
     ProductShortDesc,
     ProductImage,
   } = props;
+
+  async function addToBucket(productID) {
+    const request = await fetch(
+      `${process.env.NEXT_PUBLIC_BACK_DOMAIN}/v1/basket`,
+      {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Credentials": true,
+        },
+        body: JSON.stringify({
+          productID: productID,
+        }),
+      }
+    );
+    if (request.ok) {
+      return alert("Product has been added to basket");
+    }
+  }
+
   return (
     <div key={ProductID} className={styles.product}>
       <h3>{ProductName}</h3>
@@ -28,7 +49,12 @@ const Product = (props) => {
           <button className={styles.product_button}>More</button>
         </Link>
         <br />
-        <button className={styles.product_button}>Add to Cart</button>
+        <button
+          onClick={() => addToBucket(ProductID)}
+          className={styles.product_button}
+        >
+          Add to Cart
+        </button>
       </div>
     </div>
   );

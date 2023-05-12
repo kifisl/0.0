@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import Product from "@/components/products";
 import DefaultLayout from "@/components/layouts/defaultLayout";
 import { Row } from "react-bootstrap";
+import Link from "next/link";
 
 export const getServerSideProps = async () => {
   const response = await fetch(
@@ -25,35 +26,35 @@ export const getServerSideProps = async () => {
 };
 
 export default function Home({ data }) {
-  const [message, setMessage] = useState("");
-  const [authenticated, setAuthenticated] = useState(false);
-  const [role, setRole] = useState("");
+  // const [message, setMessage] = useState("");
+  // const [authenticated, setAuthenticated] = useState(false);
+  // const [role, setRole] = useState("");
 
-  const router = useRouter();
+  // const router = useRouter();
 
-  useEffect(() => {
-    (async () => {
-      const response = await fetch("/v1/auth/refresh", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "Content-Type": "application/json",
-        },
-      });
-      const content = await response.json();
-      if (content.user) {
-        setMessage(content.user.email);
-        setRole(content.user.role);
-        console.log("true");
-        return setAuthenticated(true);
-      }
-      setAuthenticated(false);
-      console.log("false");
-    })();
-  });
+  // useEffect(() => {
+  //   (async () => {
+  //     const response = await fetch("/v1/auth/refresh", {
+  //       method: "GET",
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
+  //     const content = await response.json();
+  //     if (content.user) {
+  //       setMessage(content.user.email);
+  //       setRole(content.user.role);
+  //       console.log("true");
+  //       return setAuthenticated(true);
+  //     }
+  //     setAuthenticated(false);
+  //     console.log("false");
+  //   })();
+  // });
 
   return (
-    <DefaultLayout auth={authenticated} role={role}>
+    <DefaultLayout>
       <Row>
         <div className="d-flex">
           {data.result.map((obj, i) => (

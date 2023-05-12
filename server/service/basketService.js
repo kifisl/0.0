@@ -2,10 +2,18 @@ const { PrismaClient } = require("@prisma/client");
 const conn = new PrismaClient();
 
 class BasketService {
-  async recountPrice(basketID) {
+  async userBasket(userID) {
     const currentBasket = await conn.basket.findFirst({
       where: {
-        BasketID: Number.parseInt(basketID),
+        UserID: Number.parseInt(userID),
+      },
+    });
+    return currentBasket;
+  }
+  async recountPrice(userID) {
+    const currentBasket = await conn.basket.findFirst({
+      where: {
+        UserID: Number.parseInt(userID),
       },
       include: {
         basketproduct: {
@@ -23,18 +31,19 @@ class BasketService {
         },
       },
     });
-
     let newPrice = 0;
-    let i;
-    for (i = 0; i < currentBasket.basketproduct.length; i++) {
-      newPrice +=
-        currentBasket.basketproduct[i].products.ProductPrice *
-        currentBasket.basketproduct[i].Quantity;
+    if (currentBasket.basketproduct != null) {
+      let i;
+      for (i = 0; i < currentBasket.basketproduct.length; i++) {
+        newPrice +=
+          currentBasket.basketproduct[i].products.ProductPrice *
+          currentBasket.basketproduct[i].Quantity;
+      }
     }
 
     const updatedBasket = await conn.basket.update({
       where: {
-        BasketID: Number.parseInt(basketID),
+        BasketID: Number.parseInt(currentBasket.BasketID),
       },
       data: {
         BasketAmount: newPrice,
