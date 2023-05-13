@@ -42,32 +42,18 @@ export const getServerSideProps = async (ctx) => {
 };
 
 const Index = ({ data, basketJson }) => {
-  // const [message, setMessage] = useState("");
-  // const [authenticated, setAuthenticated] = useState(false);
-  // const [role, setRole] = useState("");
+  const [basketAmount, setBasketAmount] = useState(
+    basketJson.basket.BasketAmount
+  );
+  const [basketItems, setBasketItems] = useState([]);
 
-  // const router = useRouter();
+  const updateBasketAmount = (newAmount) => {
+    setBasketAmount(newAmount);
+  };
 
-  // useEffect(() => {
-  //   (async () => {
-  //     const response = await fetch("/v1/auth/refresh", {
-  //       method: "GET",
-  //       headers: {
-  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
-  //     const content = await response.json();
-  //     if (content.user) {
-  //       setMessage(content.user.email);
-  //       setRole(content.user.role);
-  //       console.log("true");
-  //       return setAuthenticated(true);
-  //     }
-  //     setAuthenticated(false);
-  //     console.log("false");
-  //   })();
-  // });
+  useEffect(() => {
+    setBasketItems(data.basketItems);
+  }, [data.basketItems]);
 
   async function basketToOrder(id) {
     const newOrder = await fetch(
@@ -84,15 +70,92 @@ const Index = ({ data, basketJson }) => {
     );
   }
 
+  async function updateBasket() {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACK_DOMAIN}/v1/basket/get`,
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Credentials": true,
+        },
+      }
+    );
+    const json = await response.json();
+    console.log(json);
+    setBasketItems(json.data.basketItems);
+    setBasketAmount(json.data.basket.BasketAmount);
+  }
+
+  async function removeItemFromBasket(id) {
+    const removed = await fetch(
+      `${process.env.NEXT_PUBLIC_BACK_DOMAIN}/v1/basket`,
+      {
+        method: "DELETE",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: id,
+        }),
+      }
+    );
+
+    const updatedBasket = await fetch(
+      `${process.env.NEXT_PUBLIC_BACK_DOMAIN}/v1/basket/get`,
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Credentials": true,
+        },
+      }
+    );
+
+    const json = await updatedBasket.json();
+    const updatedBasketAmount = json.basket.BasketAmount;
+    updateBasketAmount(updatedBasketAmount);
+
+    const updatedBasketItems = json.basket.basketproduct;
+    const itemExists = updatedBasketItems.some(
+      (item) => item.BasketProductID === id
+    );
+
+    if (!itemExists) {
+      // Товар был удален на сервере, удаляем его из списка basketItems
+      setBasketItems((prevItems) =>
+        prevItems.filter((item) => item.BasketProductID !== id)
+      );
+    } else {
+      // Обновляем значение Quantity для соответствующего товара
+      setBasketItems((prevItems) =>
+        prevItems.map((item) => {
+          if (item.BasketProductID === id) {
+            const updatedItem = updatedBasketItems.find(
+              (updatedItem) => updatedItem.BasketProductID === id
+            );
+            return { ...item, Quantity: updatedItem.Quantity };
+          }
+          return item;
+        })
+      );
+    }
+  }
+
   return (
     <DefaultLayout>
       <div>{JSON.stringify(data)}</div>
       <div>
-        {data.basketItems.map((item, i) => {
-          return <BasketItem {...item} key={i} />;
+        {basketItems.map((item, i) => {
+          return (
+            <BasketItem {...item} key={i} removeItem={removeItemFromBasket} />
+          );
         })}
       </div>
-      <div>{basketJson.basket.BasketAmount}</div>
+      <div>{basketAmount}</div>
     </DefaultLayout>
   );
 };

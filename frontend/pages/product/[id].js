@@ -32,52 +32,13 @@ export const getServerSideProps = async (context) => {
 const Id = ({ data, comments }) => {
   const [showForm, setShowForm] = useState(false);
   const [comData, setComData] = useState("");
-  // const [message, setMessage] = useState("");
-  // const [authenticated, setAuthenticated] = useState(false);
-  // const [role, setRole] = useState("");
-  // const [newComms, setNewComms] = useState();
-
-  // const router = useRouter();
-
-  // useEffect(() => {
-  //   (async () => {
-  //     const response = await fetch("/v1/auth/refresh", {
-  //       method: "GET",
-  //       headers: {
-  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
-  //     const content = await response.json();
-  //     if (content.user) {
-  //       setMessage(content.user.email);
-  //       setRole(content.user.role);
-  //       console.log("true");
-  //       return setAuthenticated(true);
-  //     }
-  //     setAuthenticated(false);
-  //     console.log("false");
-  //   })();
-  // });
+  const [commentList, setCommentList] = useState(comments.comments);
 
   const showForme = (e) => {
     e.preventDefault();
     setShowForm(!showForm);
   };
 
-  async function useForceUpdateComms() {
-    const [newComms, setNewComms] = useState();
-    return async () => {
-      const content = await fetch(
-        `${process.env.NEXT_PUBLIC_BACK_DOMAIN}/v1/comments/${data.product.ProductID}`,
-        {
-          method: "GET",
-        }
-      );
-
-      setNewComms(await content.json());
-    };
-  }
 
   const sendComment = async (e) => {
     e.preventDefault();
@@ -103,8 +64,25 @@ const Id = ({ data, comments }) => {
         method: "GET",
       }
     );
-    setNewComms(await content.json());
+    const newComments = await content.json();
+
+    setCommentList(newComments.comments);
   };
+
+  useEffect(() => {
+    const loadComments = async () => {
+      const content = await fetch(
+        `${process.env.NEXT_PUBLIC_BACK_DOMAIN}/v1/comments/${data.product.ProductID}`,
+        {
+          method: "GET",
+        }
+      );
+      const newComments = await content.json();
+      setCommentList(newComments.comments);
+    };
+
+    loadComments();
+  }, []);
 
   async function addToBucket(productID) {
     const request = await fetch(
@@ -130,21 +108,12 @@ const Id = ({ data, comments }) => {
     <DefaultLayout>
       <div className={styles.b_content}>
         <div>
-          {/* <h6>
-            {
-              data.product
-                .productcategories_products_ProductCategoryToproductcategories
-                .CategoryName
-            }
-          </h6> */}
-        </div>
-        <div>
           <h1>{data.product.ProductName}</h1>
         </div>
         <div className="d-flex justify-content-around">
           <div className={styles.part_img_div}>
             <img
-              src={process.env.SERVER_DOMAIN + data.product.ProductImage}
+              src={"http://localhost:5000/" + data.product.ProductImage}
               alt=""
               width={300}
               height={199}
@@ -178,18 +147,17 @@ const Id = ({ data, comments }) => {
             <input type="submit" className={styles.product_button} />
           </form>
         )}
-        <div className="d-block">
-          {comments.comments.map((obj, i) => (
-            <>
-              <div className="d-block">
-                <div className="d-inline">
-                  <div className={styles.comment}>
-                    <p key={i}>{obj.users.UserEmail} : </p>
-                    <p key={i}>{" " + obj.Comment}</p>
-                  </div>
+
+        <div key={commentList.length} className="d-block">
+          {commentList.map((obj, i) => (
+            <div className="d-block" key={i}>
+              <div className="d-inline">
+                <div className={styles.comment}>
+                  <p>{obj.users.UserEmail} :</p>
+                  <p>{" " + obj.Comment}</p>
                 </div>
               </div>
-            </>
+            </div>
           ))}
         </div>
       </div>

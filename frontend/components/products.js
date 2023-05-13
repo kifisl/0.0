@@ -39,8 +39,9 @@ const Product = (props) => {
       <Image
         width={200}
         height={133}
-        src={process.env.SERVER_DOMAIN + ProductImage}
+        src={"http://localhost:5000/" + ProductImage}
       />
+      {/* <img src={process.env.SERVER_DOMAIN + ProductImage} /> */}
       <p>Price: {ProductPrice}$</p>
       <p>Weight: {ProductWeight}</p>
       <p>Description: {ProductShortDesc}</p>

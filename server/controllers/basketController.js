@@ -183,8 +183,14 @@ class basketController {
             },
           },
         });
-        let result = basketService.recountPrice(userID);
-        return res.status(200).json({ result });
+        let updatedQuantity = deleted.Quantity;
+        let result = await basketService.recountPrice(userID);
+
+        const responseData = {
+          ...result,
+          Quantity: updatedQuantity,
+        };
+        return res.status(200).json(responseData);
       } else {
         deleted = await conn.basketproduct.delete({
           where: {
@@ -192,7 +198,7 @@ class basketController {
           },
         });
 
-        let result = basketService.recountPrice(userID);
+        let result = await basketService.recountPrice(userID);
         return res.status(200).json({ result });
       }
     } catch (e) {
@@ -208,6 +214,15 @@ class basketController {
         const basket = await conn.basket.findFirst({
           where: {
             BasketID: currentbasket.BasketID,
+          },
+          include: {
+            basketproduct: {
+              select: {
+                BasketProductID: true,
+                ProductID: true,
+                Quantity: true,
+              },
+            },
           },
         });
         return res.status(200).json({ basket });
