@@ -1,5 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const conn = new PrismaClient();
+const paymentService = require("./paymentController");
 
 class orderController {
   async getUserOrders(req, res) {
@@ -100,10 +101,63 @@ class orderController {
   }
 
   async payForOrder(req, res) {
-    try {
-    } catch (e) {
-      res.status(400).json({ error: e.message });
+    let basketID = req.params.basketID;
+    let userID = req.cookies.userID;
+    const paymentRedirect = await paymentService.createCheckoutSession(
+      basketID,
+      userID
+    );
+    res.send(paymentRedirect);
+  }
+
+  async webhook(req, res) {
+    let data;
+    let eventType;
+
+    // Check if webhook signing is configured.
+    let webhookSecret;
+    //webhookSecret = process.env.STRIPE_WEB_HOOK;
+
+    if (webhookSecret) {
+      // Retrieve the event by verifying the signature using the raw body and secret.
+      let event;
+      let signature = req.headers["stripe-signature"];
+
+      try {
+        event = stripe.webhooks.constructEvent(
+          req.body,
+          signature,
+          webhookSecret
+        );
+      } catch (err) {
+        console.log(`⚠️  Webhook signature verification failed:  ${err}`);
+        return res.sendStatus(400);
+      }
+      // Extract the object from the event.
+      data = event.data.object;
+      eventType = event.type;
+    } else {
+      // Webhook signing is recommended, but if the secret is not configured in `config.js`,
+      // retrieve the event data directly from the request body.
+      data = req.body.data.object;
+      eventType = req.body.type;
     }
+    if (eventType === "checkout.session.completed") {
+      stripe.customers
+        .retrieve(data.customer)
+        .then(async (customer) => {
+          try {
+            // CREATE ORDER
+            paymentService.createOrder(customer, data);
+          } catch (err) {
+            console.log(typeof createOrder);
+            console.log(err);
+          }
+        })
+        .catch((err) => console.log(err.message));
+    }
+
+    res.status(200).end();
   }
 }
 

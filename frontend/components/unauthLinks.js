@@ -7,12 +7,12 @@ const Unauthlinks = () => {
   return (
     <>
       <li className="nav-item">
-        <Link href="/login">
+        <Link legacyBehavior href="/login">
           <a className="nav-link activate">Sign in</a>
         </Link>
       </li>
       <li className="nav-item">
-        <Link href="/registration">
+        <Link legacyBehavior href="/registration">
           <a className="nav-link activate">Sign up</a>
         </Link>
       </li>

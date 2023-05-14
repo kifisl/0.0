@@ -1,9 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  experimental: {
-    newNextLinkBehavior: false,
-  },
+  // experimental: {
+  //   newNextLinkBehavior: false,
+  // },
   rewrites: async () => [
     {
       source: "/v1/:path*",

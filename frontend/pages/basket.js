@@ -7,6 +7,7 @@ import DefaultLayout from "@/components/layouts/defaultLayout";
 import { Row } from "react-bootstrap";
 import Basket from "@/components/Basket";
 import BasketItem from "@/components/BasketItems";
+import Link from "next/link";
 
 export const getServerSideProps = async (ctx) => {
   const basketItems = await fetch(
@@ -54,21 +55,6 @@ const Index = ({ data, basketJson }) => {
   useEffect(() => {
     setBasketItems(data.basketItems);
   }, [data.basketItems]);
-
-  async function basketToOrder(id) {
-    const newOrder = await fetch(
-      `${process.env.NEXT_PUBLIC_BACK_DOMAIN}/v1/basket/basketToOrder`,
-      {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Credentials": true,
-          Cookie: ctx.req.headers.cookie,
-        },
-      }
-    );
-  }
 
   async function updateBasket() {
     const response = await fetch(
@@ -156,6 +142,7 @@ const Index = ({ data, basketJson }) => {
         })}
       </div>
       <div>{basketAmount}</div>
+      <Link href="/address">Pay for order</Link>
     </DefaultLayout>
   );
 };

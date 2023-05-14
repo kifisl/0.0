@@ -42,10 +42,10 @@ const DefaultLayout = (props) => {
 
       <nav className="navbar navbar-expand-md navbar-dark mb-4 bgprime">
         <div className="container-fluid">
-          <Link href="/">
+          <Link legacyBehavior href="/">
             <a className="navbar-brand">Home</a>
           </Link>
-          <Link href={`/basket`}>
+          <Link legacyBehavior href={`/basket`}>
             <button>basket</button>
           </Link>
 

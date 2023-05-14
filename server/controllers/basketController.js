@@ -1,6 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 const conn = new PrismaClient();
 const basketService = require("../service/basketService");
+const paymentService = require("./paymentController");
 
 class basketController {
   async addProductToBasket(req, res) {

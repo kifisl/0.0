@@ -26,33 +26,6 @@ export const getServerSideProps = async () => {
 };
 
 export default function Home({ data }) {
-  // const [message, setMessage] = useState("");
-  // const [authenticated, setAuthenticated] = useState(false);
-  // const [role, setRole] = useState("");
-
-  // const router = useRouter();
-
-  // useEffect(() => {
-  //   (async () => {
-  //     const response = await fetch("/v1/auth/refresh", {
-  //       method: "GET",
-  //       headers: {
-  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
-  //     const content = await response.json();
-  //     if (content.user) {
-  //       setMessage(content.user.email);
-  //       setRole(content.user.role);
-  //       console.log("true");
-  //       return setAuthenticated(true);
-  //     }
-  //     setAuthenticated(false);
-  //     console.log("false");
-  //   })();
-  // });
-
   return (
     <DefaultLayout>
       <Row>
