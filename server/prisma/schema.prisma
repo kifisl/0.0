@@ -36,7 +36,7 @@ model basketproduct {
   BasketID        Int?
   Quantity        Int?      @default(1)
   basket          basket?   @relation(fields: [BasketID], references: [BasketID], onDelete: NoAction, onUpdate: NoAction, map: "FK_basketbasketFK")
-  products        products? @relation(fields: [ProductID], references: [ProductID], onDelete: NoAction, onUpdate: NoAction, map: "FK_basketProductFK")
+  products        products? @relation(fields: [ProductID], references: [ProductID], onDelete: Cascade, onUpdate: NoAction, map: "FK_basketProductFK")
 
   @@index([ProductID], map: "index_BasketProductProductID")
 }
@@ -46,7 +46,7 @@ model comments {
   CommentProductID Int?
   CommentUserID    Int?
   Comment          String?   @db.VarChar(1000)
-  products         products? @relation(fields: [CommentProductID], references: [ProductID], onDelete: NoAction, onUpdate: NoAction, map: "FK_CommentProductPK")
+  products         products? @relation(fields: [CommentProductID], references: [ProductID], onDelete: Cascade, onUpdate: NoAction, map: "FK_CommentProductPK")
   users            users?    @relation(fields: [CommentUserID], references: [UserID], onDelete: NoAction, onUpdate: NoAction, map: "FK_CommentUserPK")
 
   @@index([Comment], map: "index_Comment")
@@ -59,7 +59,7 @@ model Favorites {
   FavoriteID Int       @id(map: "PK_favorites") @unique(map: "index_FavoriteID") @default(autoincrement())
   UserID     Int?
   ProductID  Int?
-  products   products? @relation(fields: [ProductID], references: [ProductID], onDelete: NoAction, onUpdate: NoAction, map: "FK_FavoriteProductFK")
+  products   products? @relation(fields: [ProductID], references: [ProductID], onDelete: Cascade, onUpdate: NoAction, map: "FK_FavoriteProductFK")
   users      users?    @relation(fields: [UserID], references: [UserID], onDelete: NoAction, onUpdate: NoAction, map: "FK_favoritesUserFK")
 
   @@index([ProductID], map: "index_FavoriteProductID")
@@ -72,7 +72,7 @@ model orderdetails {
   DetailsProductID Int?
   Quantity         Int?
   orders           orders?   @relation(fields: [DetailsOrderID], references: [OrderID], onDelete: NoAction, onUpdate: NoAction, map: "FK_DetailsOrderFK")
-  products         products? @relation(fields: [DetailsProductID], references: [ProductID], onDelete: NoAction, onUpdate: NoAction, map: "FK_DetailsProductFK")
+  products         products? @relation(fields: [DetailsProductID], references: [ProductID], onDelete: Cascade, onUpdate: NoAction, map: "FK_DetailsProductFK")
 
   @@index([DetailsOrderID], map: "index_DetailsOrderID")
   @@index([DetailsProductID], map: "index_DetailsProductID")

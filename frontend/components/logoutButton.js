@@ -5,7 +5,7 @@ import { useContext } from "react";
 
 const LogoutButton = () => {
   const router = useRouter();
-  const { setAuthenticated } = useContext(AuthContext);
+  const { setAuthenticated, setIsAdminUser } = useContext(AuthContext);
   const logout = async () => {
     localStorage.removeItem("token");
 
@@ -18,15 +18,12 @@ const LogoutButton = () => {
 
     const data = await logout.json();
     setAuthenticated(false);
+    setIsAdminUser(false);
     await router.push("/login");
   };
 
   return (
     <>
-      <Link legacyBehavior href={`/basket`}>
-        <button className="btn btn-outline-light my-2 my-sm-0">basket</button>
-      </Link>
-
       <li className="nav-item">
         <button className="btn btn-outline-light my-2 my-sm-0" onClick={logout}>
           Logout

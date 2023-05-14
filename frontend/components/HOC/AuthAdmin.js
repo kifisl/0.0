@@ -1,26 +1,42 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Router from "next/router";
 import { tokenAuthenticate, isAdmin } from "../../lib/auth/auth-helpers";
+import { AuthContext } from "@/context/AuthContext";
+import { useContext } from "react";
 
 const AuthAdmin = (Component) => {
-  class WithAuth extends React.Component {
-    constructor() {
-      super();
-      this.state = {
-        isAdmin: false,
+  const WithAuth = (props) => {
+    const { isAdminUser, setIsAdminUser } = useContext(AuthContext);
+
+    useEffect(() => {
+      const checkAuthentication = async () => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          return Router.push("/login");
+        }
+
+        const content = await tokenAuthenticate(token);
+
+        if (content && content.user) {
+          console.log(content.user);
+          if (isAdmin(content.user)) {
+            setIsAdminUser(true);
+          } else {
+            return Router.replace("/");
+          }
+        }
       };
+
+      checkAuthentication();
+    }, [setIsAdminUser]);
+
+    if (!isAdminUser) {
+      return <h3>У вас нет прав для доступа к этой странице</h3>; // Отображение сообщения об отсутствии прав доступа
     }
-    async componentDidMount() {
-      const content = await tokenAuthenticate(localStorage.getItem("token"));
-      if (!isAdmin(content.user)) {
-        return Router.replace("/");
-      }
-      this.setState({ isAdmin: true });
-    }
-    render() {
-      return <>{this.state.isAdmin ? <Component /> : <h3></h3>}</>;
-    }
-  }
+
+    return <Component {...props} />; // Рендеринг компонента, если есть права доступа
+  };
+
   return WithAuth;
 };
 

@@ -102,6 +102,20 @@ class productController {
       res.status(400).json({ error: e.message });
     }
   }
+
+  async deleteProduct(req, res) {
+    try {
+      let { id } = req.body;
+      const result = await conn.products.delete({
+        where: {
+          ProductID: Number.parseInt(id),
+        },
+      });
+      res.status(200).json({ result });
+    } catch (e) {
+      res.status(400).json({ error: e.message });
+    }
+  }
 }
 
 module.exports = new productController();

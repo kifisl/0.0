@@ -11,7 +11,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
-  const { setAuthenticated } = useContext(AuthContext);
+  const { setAuthenticated, setIsAdminUser } = useContext(AuthContext);
 
   const submit = async (e) => {
     e.preventDefault();
@@ -27,12 +27,15 @@ const Login = () => {
         setAuthenticated(true);
         return res.json().then(async (data) => {
           const result = await saveTokenAndAuthenticate(data.refreshToken);
-          if (result == "admin") {
+          if (result === "admin") {
+            setIsAdminUser(true);
             return router.push("/admin");
-          } else if (result == "delivery") {
+          } else if (result === "delivery") {
+            setIsAdminUser(false);
             return router.push("/delivery");
           }
 
+          setIsAdminUser(false);
           return router.push("/");
         });
       }

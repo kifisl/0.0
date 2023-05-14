@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import Product from "@/components/products";
 import DefaultLayout from "@/components/layouts/defaultLayout";
 import { Row } from "react-bootstrap";
-import BasketItem from "@/components/BasketItems";
+import BasketItem from "@/components/basketItems";
 import Link from "next/link";
 import AuthUser from "@/components/HOC/AuthUser";
 

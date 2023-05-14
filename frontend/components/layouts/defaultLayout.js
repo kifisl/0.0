@@ -73,7 +73,19 @@ const DefaultLayout = (props) => {
 
           <div>
             <ul className="navbar-nav me-auto mb-2 mb-md-0">
-              {!authenticated ? <Unauthlinks /> : <LogoutButton />}
+              {!authenticated ? (
+                <Unauthlinks />
+              ) : (
+                <>
+                  {" "}
+                  <Link legacyBehavior href={`/basket`}>
+                    <button className="btn btn-outline-light my-2 my-sm-0">
+                      basket
+                    </button>
+                  </Link>
+                  <LogoutButton />
+                </>
+              )}
             </ul>
           </div>
         </div>

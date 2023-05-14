@@ -4,15 +4,20 @@ let content = null;
 
 export const saveTokenAndAuthenticate = async (token) => {
   localStorage.setItem("token", token);
+  authenticated = false;
+  content = null;
   if (!content) {
     content = await tokenAuthenticate(token);
+    console.log(content);
   }
-  if (isAdmin(content.user)) {
-    return "admin";
-  } else if (isDelivery(content.user)) {
-    return "delivery";
-  } else {
-    return "user";
+  if (content) {
+    if (content && isAdmin(content.user)) {
+      return "admin";
+    } else if (content && isDelivery(content.user)) {
+      return "delivery";
+    } else if (content && isUser(content.user)) {
+      return "user";
+    }
   }
 };
 
@@ -21,6 +26,7 @@ export const tokenAuthenticate = async (token) => {
     return content;
   }
   authenticated = true;
+  content = null;
 
   const response = await fetch(`/v1/auth/refresh`, {
     method: "GET",
@@ -36,6 +42,8 @@ export const tokenAuthenticate = async (token) => {
 export const isAdmin = (user) => {
   if (user && user.role == ADMIN_ROLE) {
     return true;
+  } else {
+    return false;
   }
 };
 

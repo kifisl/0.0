@@ -18,7 +18,6 @@ const AuthUser = (Component) => {
 
       const content = await tokenAuthenticate(token);
       if (content && content.user) {
-        console.log(content.user);
         if (!isUser(content.user)) {
           return Router.push("/login");
         }
@@ -26,16 +25,14 @@ const AuthUser = (Component) => {
         console.log("Invalid user data");
       }
 
-      // if (!isUser(content.user)) {
-      //   return Router.push("/login");
-      // }
-
       this.setState({ isAuthenticated: true });
     }
     render() {
       const { isAuthenticated } = this.state;
       if (!isAuthenticated) {
-        return <div>авторизуйтесь</div>;
+        return (
+          <h2>У неавторизованных пользователей нет доступа к этой странице</h2>
+        );
       }
       return <Component {...this.props} />;
     }

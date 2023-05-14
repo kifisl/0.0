@@ -11,7 +11,7 @@ const Registration = () => {
   const [passwordConf, setPasswordConf] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
-  const { setAuthenticated } = useContext(AuthContext);
+  const { setAuthenticated, setIsAdminUser } = useContext(AuthContext);
 
   const submit = async (e) => {
     e.preventDefault();
@@ -28,6 +28,7 @@ const Registration = () => {
     }).then((res) => {
       if (res.status == 200) {
         setAuthenticated(true);
+        setIsAdminUser(false);
         return router.push("/activateinfo");
       }
       res.json().then((data) => {

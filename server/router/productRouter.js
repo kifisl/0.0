@@ -24,5 +24,6 @@ router.post(
   productController.editProduct
 );
 router.post("/getPag", productController.getPagination);
+router.delete("/delete", productController.deleteProduct);
 
 module.exports = router;

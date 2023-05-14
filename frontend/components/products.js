@@ -2,6 +2,8 @@ import React from "react";
 import Link from "next/link";
 import Image from "react-bootstrap/Image";
 import styles from "../styles/Product.module.css";
+import { AuthContext } from "@/context/AuthContext";
+import { useContext } from "react";
 
 const Product = (props) => {
   const {
@@ -12,7 +14,7 @@ const Product = (props) => {
     ProductShortDesc,
     ProductImage,
   } = props;
-
+  const { authenticated, setAuthenticated } = useContext(AuthContext);
   async function addToBucket(productID) {
     const request = await fetch(
       `${process.env.NEXT_PUBLIC_BACK_DOMAIN}/v1/basket`,
@@ -45,16 +47,18 @@ const Product = (props) => {
       <p>Weight: {ProductWeight}</p>
       <p>Description: {ProductShortDesc}</p>
       <div>
-        <Link href={`/product/${ProductID}`}>
+        <Link legacyBehavior href={`/product/${ProductID}`}>
           <button className={styles.product_button}>More</button>
         </Link>
         <br />
-        <button
-          onClick={() => addToBucket(ProductID)}
-          className={styles.product_button}
-        >
-          Add to Cart
-        </button>
+        {authenticated ? (
+          <button
+            onClick={() => addToBucket(ProductID)}
+            className={styles.product_button}
+          >
+            Add to Cart
+          </button>
+        ) : null}
       </div>
     </div>
   );
