@@ -1,6 +1,20 @@
 const searchService = require("../service/searchService");
+const { PrismaClient } = require("@prisma/client");
+const conn = new PrismaClient();
 
 class SearchController {
+  async searchByName(req, res) {
+    const { query } = req.query;
+    const result = await conn.products.findMany({
+      where: {
+        ProductName: {
+          contains: query,
+        },
+      },
+    });
+
+    return res.status(200).json({ result });
+  }
   async testGet(req, res) {
     const result = await searchService.search(
       await searchService.processUrl(req)

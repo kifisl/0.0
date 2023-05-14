@@ -10,8 +10,14 @@ const DefaultLayout = (props) => {
   //const [message, setMessage] = useState("");
   const [authenticated, setAuthenticated] = useState(false);
   const [role, setRole] = useState("");
-
+  const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+
+    router.push(`/search?query=${searchQuery}`);
+  };
 
   useEffect(() => {
     (async () => {
@@ -23,14 +29,14 @@ const DefaultLayout = (props) => {
         },
       });
       const content = await response.json();
+      console.log(content.user);
       if (content.user) {
         //setMessage(content.user.email);
         setRole(content.user.role);
-        console.log("true");
         return setAuthenticated(true);
+      } else {
+        return setAuthenticated(false);
       }
-      setAuthenticated(false);
-      console.log("false");
     })();
   });
 
@@ -40,14 +46,25 @@ const DefaultLayout = (props) => {
         <title>Local Travel</title>
       </Head>
 
-      <nav className="navbar navbar-expand-md navbar-dark mb-4 bgprime">
+      <nav className="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
         <div className="container-fluid">
           <Link legacyBehavior href="/">
             <a className="navbar-brand">Home</a>
           </Link>
-          <Link legacyBehavior href={`/basket`}>
-            <button>basket</button>
-          </Link>
+
+          <input
+            class="form-control mr-sm-2"
+            type="text"
+            placeholder="Search products"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <button
+            class="btn btn-outline-light my-2 my-sm-0"
+            onClick={handleSearch}
+          >
+            Search
+          </button>
 
           <div>
             <ul className="navbar-nav me-auto mb-2 mb-md-0">

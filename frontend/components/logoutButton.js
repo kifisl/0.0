@@ -18,9 +18,17 @@ const LogoutButton = () => {
   };
 
   return (
-    <li className="nav-item">
-      <button onClick={logout}>Logout</button>
-    </li>
+    <>
+      <Link legacyBehavior href={`/basket`}>
+        <button class="btn btn-outline-light my-2 my-sm-0">basket</button>
+      </Link>
+
+      <li className="nav-item">
+        <button class="btn btn-outline-light my-2 my-sm-0" onClick={logout}>
+          Logout
+        </button>
+      </li>
+    </>
   );
 };
 

@@ -5,7 +5,6 @@ import { useState, useEffect } from "react";
 import Product from "@/components/products";
 import DefaultLayout from "@/components/layouts/defaultLayout";
 import { Row } from "react-bootstrap";
-import Basket from "@/components/Basket";
 import BasketItem from "@/components/BasketItems";
 import Link from "next/link";
 
@@ -69,7 +68,6 @@ const Index = ({ data, basketJson }) => {
       }
     );
     const json = await response.json();
-    console.log(json);
     setBasketItems(json.data.basketItems);
     setBasketAmount(json.data.basket.BasketAmount);
   }
@@ -133,7 +131,6 @@ const Index = ({ data, basketJson }) => {
 
   return (
     <DefaultLayout>
-      <div>{JSON.stringify(data)}</div>
       <div>
         {basketItems.map((item, i) => {
           return (

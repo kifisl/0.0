@@ -47,39 +47,50 @@ const AddressForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
+    <DefaultLayout>
+      <form
+        onSubmit={handleSubmit}
+        style={{
+          width: 100 + "%",
+          maxWidth: 500 + "px",
+          margin: 0 + " auto",
+          padding: 15 + "px",
+        }}
+      >
+        <h1>Address</h1>
         <label htmlFor="address">Address</label>
         <input
           type="text"
           id="address"
           name="address"
+          className="form-control"
           value={address.address}
           onChange={handleInputChange}
         />
-      </div>
-      <div>
+
         <label htmlFor="city">City</label>
         <input
           type="text"
+          className="form-control"
           id="city"
           name="city"
           value={address.city}
           onChange={handleInputChange}
         />
-      </div>
-      <div>
         <label htmlFor="country">Country</label>
         <input
+          className="form-control"
           type="text"
           id="country"
           name="country"
           value={address.country}
           onChange={handleInputChange}
         />
-      </div>
-      <button type="submit">Pay</button>
-    </form>
+        <button type="submit" className="btn btn-info">
+          Pay
+        </button>
+      </form>
+    </DefaultLayout>
   );
 };
 
