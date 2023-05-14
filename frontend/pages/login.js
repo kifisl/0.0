@@ -3,12 +3,15 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import DefaultLayout from "@/components/layouts/defaultLayout";
 import { saveTokenAndAuthenticate } from "@/lib/auth/auth-helpers";
+import { AuthContext } from "@/context/AuthContext";
+import { useContext } from "react";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
+  const { setAuthenticated } = useContext(AuthContext);
 
   const submit = async (e) => {
     e.preventDefault();
@@ -21,13 +24,15 @@ const Login = () => {
       }),
     }).then(async (res) => {
       if (res.status === 200) {
+        setAuthenticated(true);
         return res.json().then(async (data) => {
-          const result = await saveTokenAndAuthenticate(data.accessToken);
+          const result = await saveTokenAndAuthenticate(data.refreshToken);
           if (result == "admin") {
             return router.push("/admin");
           } else if (result == "delivery") {
             return router.push("/delivery");
           }
+
           return router.push("/");
         });
       }

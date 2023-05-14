@@ -7,6 +7,7 @@ import DefaultLayout from "@/components/layouts/defaultLayout";
 import { Row } from "react-bootstrap";
 import BasketItem from "@/components/BasketItems";
 import Link from "next/link";
+import AuthUser from "@/components/HOC/AuthUser";
 
 export const getServerSideProps = async (ctx) => {
   const basketItems = await fetch(
@@ -144,4 +145,4 @@ const Index = ({ data, basketJson }) => {
   );
 };
 
-export default Index;
+export default AuthUser(Index);

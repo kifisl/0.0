@@ -2,6 +2,8 @@ import React from "react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import DefaultLayout from "@/components/layouts/defaultLayout";
+import { AuthContext } from "@/context/AuthContext";
+import { useContext } from "react";
 
 const Registration = () => {
   const [email, setEmail] = useState("");
@@ -9,6 +11,7 @@ const Registration = () => {
   const [passwordConf, setPasswordConf] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
+  const { setAuthenticated } = useContext(AuthContext);
 
   const submit = async (e) => {
     e.preventDefault();
@@ -24,6 +27,7 @@ const Registration = () => {
       }),
     }).then((res) => {
       if (res.status == 200) {
+        setAuthenticated(true);
         return router.push("/activateinfo");
       }
       res.json().then((data) => {

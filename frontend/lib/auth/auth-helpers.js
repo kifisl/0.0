@@ -1,8 +1,12 @@
 import { ADMIN_ROLE, USER_ROLE, DELIVERY_ROLE } from "./roles";
+let authenticated = false;
+let content = null;
 
 export const saveTokenAndAuthenticate = async (token) => {
   localStorage.setItem("token", token);
-  const content = await tokenAuthenticate(token);
+  if (!content) {
+    content = await tokenAuthenticate(token);
+  }
   if (isAdmin(content.user)) {
     return "admin";
   } else if (isDelivery(content.user)) {
@@ -13,6 +17,11 @@ export const saveTokenAndAuthenticate = async (token) => {
 };
 
 export const tokenAuthenticate = async (token) => {
+  if (authenticated) {
+    return content;
+  }
+  authenticated = true;
+
   const response = await fetch(`/v1/auth/refresh`, {
     method: "GET",
     headers: {
@@ -20,24 +29,26 @@ export const tokenAuthenticate = async (token) => {
       "Content-Type": "application/json",
     },
   });
-  const content = await response.json();
+  content = await response.json();
   return content;
 };
 
 export const isAdmin = (user) => {
-  if (user.role == ADMIN_ROLE) {
+  if (user && user.role == ADMIN_ROLE) {
     return true;
   }
 };
 
 export const isUser = (user) => {
-  if (user.role == USER_ROLE) {
+  if (user && user.role == USER_ROLE) {
     return true;
+  } else {
+    return false;
   }
 };
 
 export const isDelivery = (user) => {
-  if (user.role == DELIVERY_ROLE) {
+  if (user && user.role == DELIVERY_ROLE) {
     return true;
   }
 };

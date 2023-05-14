@@ -228,13 +228,13 @@ class basketController {
         });
         return res.status(200).json({ basket });
       } else {
-        const newBasket = await conn.basket.create({
+        const basket = await conn.basket.create({
           data: {
             UserID: Number.parseInt(userID),
             BasketAmount: 0,
           },
         });
-        return res.status(200).json({ newBasket });
+        return res.status(200).json({ basket });
       }
     } catch (e) {
       res.status(400).json({ error: e.message });

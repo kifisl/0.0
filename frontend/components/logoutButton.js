@@ -1,8 +1,11 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { AuthContext } from "@/context/AuthContext";
+import { useContext } from "react";
 
 const LogoutButton = () => {
   const router = useRouter();
+  const { setAuthenticated } = useContext(AuthContext);
   const logout = async () => {
     localStorage.removeItem("token");
 
@@ -14,17 +17,18 @@ const LogoutButton = () => {
     );
 
     const data = await logout.json();
+    setAuthenticated(false);
     await router.push("/login");
   };
 
   return (
     <>
       <Link legacyBehavior href={`/basket`}>
-        <button class="btn btn-outline-light my-2 my-sm-0">basket</button>
+        <button className="btn btn-outline-light my-2 my-sm-0">basket</button>
       </Link>
 
       <li className="nav-item">
-        <button class="btn btn-outline-light my-2 my-sm-0" onClick={logout}>
+        <button className="btn btn-outline-light my-2 my-sm-0" onClick={logout}>
           Logout
         </button>
       </li>
