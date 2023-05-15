@@ -23,11 +23,35 @@ export const getServerSideProps = async () => {
 const Products = ({ data }) => {
   const [showState, setShowState] = useState(false);
   const [deleteId, setDeleteId] = useState("");
+  const [products, setProducts] = useState(data.products);
 
   const closeModal = () => setShowState(false);
   const openModal = (e, props) => {
     setDeleteId(props.row.original.ProductID);
     setShowState(true);
+  };
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACK_DOMAIN}/v1/product`,
+        {
+          method: "POST",
+        }
+      );
+      const content = await response.json();
+      setProducts(content.products);
+    };
+
+    if (showState) {
+      fetchData();
+    }
+  }, [showState]);
+
+  const handleProductDeleted = async () => {
+    setProducts((prevProducts) =>
+      prevProducts.filter((product) => product.ProductID !== deleteId)
+    );
+    closeModal();
   };
 
   const columns = useMemo(() => [
@@ -76,12 +100,17 @@ const Products = ({ data }) => {
   return (
     <AdminSidebar>
       <div className="d-flex justify-content-center">
-        <ProductTable columns={columns} data={data.products} />
+        <ProductTable columns={columns} data={products} />
       </div>
       <Link href="/admin/products/add" passHref>
         <button className="btn">Add part</button>
       </Link>
-      <Modalwindow show={showState} toggleModal={closeModal} id={deleteId} />
+      <Modalwindow
+        show={showState}
+        toggleModal={closeModal}
+        id={deleteId}
+        onProductDeleted={handleProductDeleted}
+      />
     </AdminSidebar>
   );
 };

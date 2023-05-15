@@ -12,13 +12,13 @@ module.exports = function (role) {
         return next(ApiError.UnathorizedError());
       }
 
-      const accessToken = authorizationHeader.split(" ")[1];
-      if (!accessToken) {
+      const refreshToken = authorizationHeader.split(" ")[1];
+      if (!refreshToken) {
         console.log("2");
         return next(ApiError.UnathorizedError());
       }
 
-      const userData = tokenService.validateAccessToken(accessToken);
+      const userData = tokenService.validateRefreshToken(refreshToken);
       if (!userData) {
         console.log("3");
         return next(ApiError.UnathorizedError());

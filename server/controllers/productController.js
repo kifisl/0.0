@@ -4,13 +4,17 @@ const conn = new PrismaClient();
 class productController {
   async addProduct(req, res) {
     try {
-      let { name, price, weight, img_path, short_desc } = req.body;
+      let { name, price, weight, short_desc } = req.body;
+      let fileName;
+      if (req.file) {
+        fileName = req.file.filename;
+      }
       const addedProduct = await conn.products.create({
         data: {
           ProductName: name,
           ProductWeight: Number.parseInt(weight),
           ProductShortDesc: short_desc,
-          ProductImage: img_path,
+          ProductImage: fileName,
           ProductPrice: Number.parseFloat(price),
         },
       });
@@ -70,7 +74,7 @@ class productController {
           data: {
             ProductName: updateName,
             ProductPrice: Number.parseFloat(updatePrice),
-            ProductImage: "http://localhost:5000/" + fileName,
+            ProductImage: fileName,
             ProductShortDesc: update_desc,
           },
         });

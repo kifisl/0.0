@@ -10,7 +10,6 @@ const ProductTable = ({ columns, data }) => {
     prepareRow,
     nextPage,
     previousPage,
-    setPageSize,
     canPreviousPage,
     canNextPage,
     state: { pageIndex, pageSize },
@@ -61,20 +60,7 @@ const ProductTable = ({ columns, data }) => {
         >
           {"<"}
         </button>
-        <select
-          className="form-select"
-          style={{ width: 120 + "px" }}
-          value={pageSize}
-          onChange={(e) => {
-            setPageSize(Number(e.target.value));
-          }}
-        >
-          {[10, 20].map((pageSize) => (
-            <option key={pageSize} value={pageSize}>
-              {pageSize}
-            </option>
-          ))}
-        </select>
+
         <button
           className="btn btn-primary mr-5"
           onClick={() => nextPage()}

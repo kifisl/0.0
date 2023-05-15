@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 
-const Modalwindow = ({ show, toggleModal, id, affectedEntity }) => {
+const Modalwindow = ({ show, toggleModal, id, onProductDeleted }) => {
   const deleteHandle = async (id) => {
     const response = await fetch(`http://localhost:3000/v1/product/delete`, {
       method: "DELETE",
@@ -12,6 +12,7 @@ const Modalwindow = ({ show, toggleModal, id, affectedEntity }) => {
     });
     const content = await response.json();
     toggleModal();
+    onProductDeleted();
   };
   return (
     <>
