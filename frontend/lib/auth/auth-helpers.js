@@ -58,5 +58,7 @@ export const isUser = (user) => {
 export const isDelivery = (user) => {
   if (user && user.role == DELIVERY_ROLE) {
     return true;
+  } else {
+    return false;
   }
 };

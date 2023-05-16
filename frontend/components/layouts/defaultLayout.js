@@ -6,7 +6,7 @@ import Unauthlinks from "../unauthLinks";
 import LogoutButton from "../logoutButton";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import { AuthContext } from "@/context/AuthContext";
+import { AuthContext } from "@/lib/auth/AuthContext";
 import { useContext } from "react";
 
 let auth = false;

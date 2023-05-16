@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Router from "next/router";
 import { tokenAuthenticate, isAdmin } from "../../lib/auth/auth-helpers";
-import { AuthContext } from "@/context/AuthContext";
+import { AuthContext } from "@/lib/auth/AuthContext";
 import { useContext } from "react";
 
 const AuthAdmin = (Component) => {

@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "react-bootstrap/Image";
 import styles from "../styles/Product.module.css";
-import { AuthContext } from "@/context/AuthContext";
+import { AuthContext } from "@/lib/auth/AuthContext";
 import { useContext } from "react";
 
 const Product = (props) => {

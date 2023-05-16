@@ -6,6 +6,7 @@ export const AuthProvider = ({ children }) => {
   const [authenticated, setAuthenticated] = useState(false);
   const [role, setRole] = useState("");
   const [isAdminUser, setIsAdminUser] = useState(false);
+  const [isDeliveryUser, setIsDeliveryUser] = useState(false);
 
   return (
     <AuthContext.Provider
@@ -16,6 +17,8 @@ export const AuthProvider = ({ children }) => {
         setRole,
         isAdminUser,
         setIsAdminUser,
+        isDeliveryUser,
+        setIsDeliveryUser,
       }}
     >
       {children}

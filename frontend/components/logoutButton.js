@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { AuthContext } from "@/context/AuthContext";
+import { AuthContext } from "@/lib/auth/AuthContext";
 import { useContext } from "react";
 
 const LogoutButton = () => {
   const router = useRouter();
-  const { setAuthenticated, setIsAdminUser } = useContext(AuthContext);
+  const { setAuthenticated, setIsAdminUser, setIsDeliveryUser } =
+    useContext(AuthContext);
   const logout = async () => {
     localStorage.removeItem("token");
 
@@ -19,6 +20,7 @@ const LogoutButton = () => {
     const data = await logout.json();
     setAuthenticated(false);
     setIsAdminUser(false);
+    setIsDeliveryUser(false);
     await router.push("/login");
   };
 

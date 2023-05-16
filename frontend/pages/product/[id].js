@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { BsFillCheckCircleFill, BsFillDashCircleFill } from "react-icons/bs";
 import DefaultLayout from "@/components/layouts/defaultLayout";
-import { AuthContext } from "@/context/AuthContext";
+import { AuthContext } from "@/lib/auth/AuthContext";
 import { useContext } from "react";
 
 export const getServerSideProps = async (context) => {

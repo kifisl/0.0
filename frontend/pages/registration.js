@@ -2,7 +2,7 @@ import React from "react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import DefaultLayout from "@/components/layouts/defaultLayout";
-import { AuthContext } from "@/context/AuthContext";
+import { AuthContext } from "@/lib/auth/AuthContext";
 import { useContext } from "react";
 
 const Registration = () => {
