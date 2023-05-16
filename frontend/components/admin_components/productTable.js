@@ -22,17 +22,13 @@ const ProductTable = ({ columns, data }) => {
     usePagination
   );
 
-  
   return (
-    
     <div className="d-block">
       <table {...getTableProps()} className="table">
         <thead>
           {headerGroups.map((headerGroup) => (
-            // eslint-disable-next-line
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                // eslint-disable-next-line
                 <th {...column.getHeaderProps()}>{column.render("Header")}</th>
               ))}
             </tr>
@@ -42,11 +38,9 @@ const ProductTable = ({ columns, data }) => {
           {page.map((row, i) => {
             prepareRow(row);
             return (
-              // eslint-disable-next-line
               <tr {...row.getRowProps()}>
                 {row.cells.map((cell) => {
                   return (
-                    // eslint-disable-next-line
                     <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
                   );
                 })}
@@ -61,7 +55,7 @@ const ProductTable = ({ columns, data }) => {
           onClick={() => previousPage()}
           disabled={!canPreviousPage}
         >
-          {"<"}
+          {"⏴"}
         </button>
         <Link href="/admin/products/add" passHref>
           <button className="btn btn-primary ">Add part</button>
@@ -71,7 +65,7 @@ const ProductTable = ({ columns, data }) => {
           onClick={() => nextPage()}
           disabled={!canNextPage}
         >
-          {">"}
+          {"⏵"}
         </button>
       </div>
     </div>

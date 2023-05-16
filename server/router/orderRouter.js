@@ -6,7 +6,7 @@ const paymentController = require("../controllers/paymentController");
 
 router.get("/getByID/:orderID", orderController.getOrderByID);
 router.get("/", orderController.getUserOrders);
-router.get("/delivery/getAll", checkRole(2), orderController.getAllOrders);
+router.get("/delivery/getAll", orderController.getAllOrders);
 router.post("/pay", paymentController.createOrder);
 router.put(
   "/delivery/:orderID/:status",

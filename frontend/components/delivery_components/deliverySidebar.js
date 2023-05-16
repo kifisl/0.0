@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import LogoutButton from "../logoutButton";
+import Orders from "./orders";
 
 const DeliverySidebar = (props) => {
   return (
@@ -13,7 +14,7 @@ const DeliverySidebar = (props) => {
             </Link>
           </ul>
           <ul>
-            <Products />
+            <Orders />
           </ul>
           <div className="d-flex justify-content-center">
             <LogoutButton />

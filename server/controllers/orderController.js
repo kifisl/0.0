@@ -22,6 +22,13 @@ class orderController {
               },
             },
           },
+          address: {
+            select: {
+              Country: true,
+              City: true,
+              Address: true,
+            },
+          },
         },
       });
       return res.status(200).json({ userOrders });
@@ -43,6 +50,13 @@ class orderController {
                   ProductPrice: true,
                 },
               },
+            },
+          },
+          address: {
+            select: {
+              Country: true,
+              City: true,
+              Address: true,
             },
           },
         },
