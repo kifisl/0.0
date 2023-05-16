@@ -20,6 +20,7 @@ app.use(
     origin: process.env.CLIENT_URL,
   })
 );
+
 app.use("/api", router);
 app.use(errorMiddleware);
 

@@ -8,6 +8,7 @@ import { Row } from "react-bootstrap";
 import BasketItem from "@/components/basketItems";
 import Link from "next/link";
 import AuthUser from "@/components/HOC/AuthUser";
+import styles from "../styles/Product.module.css";
 
 export const getServerSideProps = async (ctx) => {
   const basketItems = await fetch(
@@ -132,15 +133,30 @@ const Index = ({ data, basketJson }) => {
 
   return (
     <DefaultLayout>
-      <div>
-        {basketItems.map((item, i) => {
-          return (
-            <BasketItem {...item} key={i} removeItem={removeItemFromBasket} />
-          );
-        })}
-      </div>
-      <div>{basketAmount}</div>
-      <Link href="/address">Pay for order</Link>
+      {basketItems.length === 0 ? (
+        <div className={styles.empty_basket}>
+          <h3>Your basket is empty</h3>
+        </div>
+      ) : (
+        <>
+          <div>
+            {basketItems.map((item, i) => {
+              return (
+                <BasketItem
+                  {...item}
+                  key={i}
+                  removeItem={removeItemFromBasket}
+                />
+              );
+            })}
+          </div>
+
+          <h3>Total: {basketAmount} BYN</h3>
+          <Link legacyBehavior href="/address">
+            <button className={styles.product_button}>Pay for order</button>
+          </Link>
+        </>
+      )}
     </DefaultLayout>
   );
 };

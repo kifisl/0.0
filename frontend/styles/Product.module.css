@@ -1,28 +1,40 @@
 .product {
     border: 1px;
     border-style: solid;
-    border-color: #151d3b7e;
+    border-color: #006670;
     backdrop-filter: blur(10px);
     border-radius: 10px;
     padding: 10px;
     margin: 5px;
   }
+  .custom-search-input {
+    margin-right: 8px;
+  }
   
+  .custom-search-button {
+    margin-left: 8px;
+  }
+  .empty_basket {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 400px; 
+  }
   .product_button {
-    border: #d82148 solid 1px;
+    border: #ec6e41 solid 1px;
     border-radius: 5px;
     background: white;
     margin: 5px;
-    color: #d82148;
+    color: #ec6e41;
   }
   
   .product_button:hover {
     color: white;
-    background: #d82148;
+    background: #ec6e41;
   }
   
   .link_more {
-    color: #d82148;
+    color: #ec6e41;
   }
   
   .product p {
@@ -37,12 +49,16 @@
   .comment {
     border: 1px;
     border-style: solid;
-    border-color: #151d3b7e;
+    border-color: #006670;
     border-radius: 10px;
     padding: 10px;
     margin-bottom: 5px;
   }
   
+  .logoimg {
+  width: 100px; /* Задайте необходимую ширину логотипа */
+  height: auto; /* Автоматический расчет высоты для сохранения пропорций */
+}
   .comment p {
     margin-bottom: 2px;
   }

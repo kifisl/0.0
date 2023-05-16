@@ -26,7 +26,7 @@ const createOrder = async (req, res) => {
 
     const lineItems = userBasket.basketproduct.map((basketProduct) => ({
       price_data: {
-        currency: "usd", // Валюта товара
+        currency: "byn", // Валюта товара
         product_data: {
           name: basketProduct.products.ProductName, // Название товара
         },

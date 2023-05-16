@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import Head from "next/head";
+import styles from "../../styles/Product.module.css";
 import Unauthlinks from "../unauthLinks";
 import LogoutButton from "../logoutButton";
 import { useRouter } from "next/router";
@@ -25,8 +26,8 @@ const DefaultLayout = (props) => {
 
   useEffect(() => {
     (async () => {
-      if (auth) return; // Проверьте флаг состояния аутентификации
-      auth = true; //
+      if (auth) return;
+      auth = true;
       const response = await fetch("/v1/auth/refresh", {
         method: "GET",
         headers: {
@@ -36,7 +37,6 @@ const DefaultLayout = (props) => {
       });
       const content = await response.json();
       if (content.user) {
-        //setMessage(content.user.email);
         setRole(content.user.role);
         return setAuthenticated(true);
       } else {
@@ -48,28 +48,33 @@ const DefaultLayout = (props) => {
   return (
     <>
       <Head>
-        <title>Local Travel</title>
+        <title>Paradise</title>
       </Head>
 
       <nav className="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
         <div className="container-fluid">
           <Link legacyBehavior href="/">
-            <a className="navbar-brand">Home</a>
+            <img
+              src={"http://localhost:5000/PARADISE_2.png"}
+              alt="PARADISE"
+              className={styles.logoimg}
+            />
           </Link>
-
-          <input
-            className="form-control mr-sm-2"
-            type="text"
-            placeholder="Search products"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <button
-            className="btn btn-outline-light my-2 my-sm-0"
-            onClick={handleSearch}
-          >
-            Search
-          </button>
+          <div className="d-flex align-items-center mx-auto">
+            <input
+              className="form-control custom-search-input"
+              type="text"
+              placeholder="Search products"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <button
+              className="btn btn-outline-light custom-search-button"
+              onClick={handleSearch}
+            >
+              <i className="bi bi-search"></i>
+            </button>
+          </div>
 
           <div>
             <ul className="navbar-nav me-auto mb-2 mb-md-0">

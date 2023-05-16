@@ -25,8 +25,10 @@ module.exports = function (role) {
       }
 
       if (userData.role != role) {
+        console.log("5");
         return next(ApiError.NoAccess());
       }
+
       req.user = userData;
       next();
     } catch (e) {

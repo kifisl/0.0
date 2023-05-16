@@ -9,6 +9,11 @@ const AdminSidebar = (props) => {
       <nav className="nav flex-column col-2 bg-dark ">
         <div>
           <ul>
+            <Link legacyBehavior href="/admin">
+              <a className="nav-link activate text-light">Home</a>
+            </Link>
+          </ul>
+          <ul>
             <Products />
           </ul>
           <div className="d-flex justify-content-center">

@@ -4,16 +4,23 @@ const conn = new PrismaClient();
 class productController {
   async addProduct(req, res) {
     try {
-      let { name, price, weight, short_desc } = req.body;
+      let name = req.body.name;
+      let { price, weight, short_desc } = req.body;
+      console.log("name: " + name);
+      console.log("price: " + price);
+      console.log("weight: " + weight);
+      console.log("short_desc: " + short_desc);
       let fileName;
+      console.log(req.body);
+      console.log(req.headers);
       if (req.file) {
         fileName = req.file.filename;
       }
       const addedProduct = await conn.products.create({
         data: {
-          ProductName: name,
+          ProductName: String(name),
           ProductWeight: Number.parseInt(weight),
-          ProductShortDesc: short_desc,
+          ProductShortDesc: String(short_desc),
           ProductImage: fileName,
           ProductPrice: Number.parseFloat(price),
         },
@@ -63,28 +70,30 @@ class productController {
 
   async editProduct(req, res) {
     try {
-      let { updateName, id, updatePrice, update_desc } = req.body;
+      let { updateName, id, updatePrice, update_desc, updateWeight } = req.body;
       let update;
       if (req.file) {
-        let fileName = req.file.fileName;
+        let fileName = req.file.filename;
       }
       if (req.file) {
         update = await conn.products.update({
           where: { ProductID: Number.parseInt(id) },
           data: {
-            ProductName: updateName,
+            ProductName: String(updateName),
             ProductPrice: Number.parseFloat(updatePrice),
-            ProductImage: fileName,
-            ProductShortDesc: update_desc,
+            ProductImage: req.file.filename,
+            ProductShortDesc: String(update_desc),
+            ProductWeight: Number.parseInt(updateWeight),
           },
         });
       } else {
         update = await conn.products.update({
           where: { ProductID: Number.parseInt(id) },
           data: {
-            ProductName: updateName,
+            ProductName: String(updateName),
             ProductPrice: Number.parseFloat(updatePrice),
-            ProductShortDesc: update_desc,
+            ProductShortDesc: String(update_desc),
+            ProductWeight: Number.parseInt(updateWeight),
           },
         });
       }

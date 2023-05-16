@@ -1,5 +1,6 @@
 import React from "react";
 import { useTable, usePagination } from "react-table";
+import Link from "next/link";
 
 const ProductTable = ({ columns, data }) => {
   const {
@@ -21,7 +22,9 @@ const ProductTable = ({ columns, data }) => {
     usePagination
   );
 
+  
   return (
+    
     <div className="d-block">
       <table {...getTableProps()} className="table">
         <thead>
@@ -52,17 +55,19 @@ const ProductTable = ({ columns, data }) => {
           })}
         </tbody>
       </table>
-      <div className="d-flex justify-content-center">
+      <div className="d-flex justify-content-between mt-3">
         <button
-          className="btn btn-primary mr-5"
+          className="btn btn-primary mr-3"
           onClick={() => previousPage()}
           disabled={!canPreviousPage}
         >
           {"<"}
         </button>
-
+        <Link href="/admin/products/add" passHref>
+          <button className="btn btn-primary ">Add part</button>
+        </Link>
         <button
-          className="btn btn-primary mr-5"
+          className="btn btn-primary mr-3"
           onClick={() => nextPage()}
           disabled={!canNextPage}
         >

@@ -5,6 +5,7 @@ import { BsFillTrashFill, BsPencil } from "react-icons/bs";
 import Link from "next/link";
 import Adminlayout from "@/components/layouts/adminLayout";
 import Modalwindow from "@/components/modalWindow";
+import AuthAdmin from "@/components/HOC/AuthAdmin";
 
 export const getServerSideProps = async () => {
   const response = await fetch(
@@ -77,9 +78,9 @@ const Products = ({ data }) => {
         <Link
           href={{
             pathname: "admin/products/edit/[id]",
-            query: { id: props.row.original.id },
+            query: { id: props.row.original.ProductID },
           }}
-          as={`/admin/products/edit/${props.row.original.id}`}
+          as={`/admin/products/edit/${props.row.original.ProductID}`}
         >
           <button className="btn">
             <BsPencil />
@@ -102,9 +103,7 @@ const Products = ({ data }) => {
       <div className="d-flex justify-content-center">
         <ProductTable columns={columns} data={products} />
       </div>
-      <Link href="/admin/products/add" passHref>
-        <button className="btn">Add part</button>
-      </Link>
+      
       <Modalwindow
         show={showState}
         toggleModal={closeModal}
@@ -115,4 +114,4 @@ const Products = ({ data }) => {
   );
 };
 
-export default Products;
+export default AuthAdmin(Products);

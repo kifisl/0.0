@@ -1,6 +1,7 @@
 import { useState } from "react";
 import DefaultLayout from "@/components/layouts/defaultLayout";
 import { useRouter } from "next/router";
+import styles from "../styles/Product.module.css";
 
 const AddressForm = () => {
   const router = useRouter();
@@ -37,13 +38,6 @@ const AddressForm = () => {
       console.log(redirectUrl);
       router.push(redirectUrl);
     }
-
-    // if (response.ok) {
-    //   const data = await response.json();
-    //   const redirectUrl = await data.redirectUrl;
-    //   console.log(redirectUrl);
-    //   router.push(redirectUrl);
-    // }
   };
 
   return (
@@ -57,7 +51,7 @@ const AddressForm = () => {
           padding: 15 + "px",
         }}
       >
-        <h1>Address</h1>
+        <h3>Please enter a delivery address</h3>
         <label htmlFor="address">Address</label>
         <input
           type="text"
@@ -86,7 +80,7 @@ const AddressForm = () => {
           value={address.country}
           onChange={handleInputChange}
         />
-        <button type="submit" className="btn btn-info">
+        <button type="submit" className={styles.product_button}>
           Pay
         </button>
       </form>

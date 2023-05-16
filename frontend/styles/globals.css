@@ -6,7 +6,13 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   background-color: #dadbbd;
 }
-
+button {
+  border: #ec6e41 solid 1px;
+  border-radius: 5px;
+  background: white;
+  margin: 5px;
+  color: #ec6e41;
+}
 #__next {
   min-height: 100vh;
   min-width: 100vh;

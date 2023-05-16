@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { BsFillCheckCircleFill, BsFillDashCircleFill } from "react-icons/bs";
 import DefaultLayout from "@/components/layouts/defaultLayout";
+import { AuthContext } from "@/context/AuthContext";
+import { useContext } from "react";
 
 export const getServerSideProps = async (context) => {
   const response = await fetch(
@@ -33,12 +35,12 @@ const Id = ({ data, comments }) => {
   const [showForm, setShowForm] = useState(false);
   const [comData, setComData] = useState("");
   const [commentList, setCommentList] = useState(comments.comments);
+  const { authenticated, setAuthenticated } = useContext(AuthContext);
 
   const showForme = (e) => {
     e.preventDefault();
     setShowForm(!showForm);
   };
-
 
   const sendComment = async (e) => {
     e.preventDefault();
@@ -131,11 +133,14 @@ const Id = ({ data, comments }) => {
             </button>
           </div>
         </div>
-        <form>
-          <button onClick={showForme} className={styles.product_button}>
-            Left a comment
-          </button>
-        </form>
+        {authenticated ? (
+          <form>
+            <button onClick={showForme} className={styles.product_button}>
+              Left a comment
+            </button>
+          </form>
+        ) : null}
+
         {showForm && (
           <form onSubmit={sendComment}>
             <label htmlFor="comBody">Comment: </label>

@@ -65,7 +65,7 @@ const Login = () => {
             placeholder="Email.."
             autoComplete="off"
             required
-            //pattern="[a-z0-9]+\.?[a-z0-9]+@[a-z]+\.[a-z]{2,3}"
+            pattern="[a-z0-9]+\.?[a-z0-9]+@[a-z]+\.[a-z]{2,3}"
             onChange={(e) => setEmail(e.target.value)}
           />
           <label htmlFor="password">Password</label>
@@ -78,7 +78,7 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
           <h6 className="text-danger">{errorMessage}</h6>
-          <button type="submit" className="btn btn-info">
+          <button type="submit" className="btn btn-info ">
             Signin
           </button>
         </form>
