@@ -43,7 +43,7 @@ const Product = (props) => {
         height={133}
         src={"http://localhost:5000/" + ProductImage}
       />
-      <p>Price: {ProductPrice}$</p>
+      <p>Price: {ProductPrice} BYN  </p>
       <p>Weight: {ProductWeight}</p>
       <p>Description: {ProductShortDesc}</p>
       <div>

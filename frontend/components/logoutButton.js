@@ -26,7 +26,7 @@ const LogoutButton = () => {
 
   return (
     <>
-      <li className="nav-item">
+      <li className="list-unstyled">
         <button className="btn btn-outline-light my-2 my-sm-0" onClick={logout}>
           Logout
         </button>

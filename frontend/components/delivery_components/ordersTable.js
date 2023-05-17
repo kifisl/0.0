@@ -1,9 +1,24 @@
 import React from "react";
 import Link from "next/link";
-import { useTable, usePagination } from "react-table";
-import Select from "react-select";
+import { useTable, usePagination, useSortBy } from "react-table";
+import { useEffect, useMemo, useState } from "react";
+import { formatDate } from "@/pages/delivery/orders";
 
 const OrderTable = ({ columns, data }) => {
+  const [sortBy, setSortBy] = useState({
+    column: null,
+    desc: false,
+  });
+
+  const formattedData = useMemo(() => {
+    return data.map((item) => {
+      return {
+        ...item,
+        OrderDate: formatDate(item.OrderDate), // Преобразование в строку
+      };
+    });
+  }, [data]);
+
   const {
     getTableProps,
     getTableBodyProps,
@@ -14,53 +29,66 @@ const OrderTable = ({ columns, data }) => {
     previousPage,
     canPreviousPage,
     canNextPage,
-    state: { pageIndex, pageSize },
+    state: { pageIndex, pageSize, sortBy: tableSortBy },
   } = useTable(
     {
       columns,
-      data,
+      data: formattedData,
+      initialState: { pageSize: 5 },
     },
+    useSortBy,
     usePagination
   );
 
-  const handleStatusChange = (selectedOption) => {
-    setSelectedStatus(selectedOption);
-  };
+  useEffect(() => {
+    if (tableSortBy.length > 0) {
+      const sortColumn = columns.find(
+        (column) => column.id === tableSortBy[0].id
+      );
 
-  const statusOptions = [
-    { value: 1, label: "accepted" },
-    { value: 2, label: "on the way" },
-    { value: 3, label: "delivered" },
-  ];
-
-  const filteredData = useMemo(() => {
-    if (!selectedStatus) {
-      return data;
+      if (sortColumn) {
+        sortColumn.toggleSortBy(tableSortBy[0].desc);
+      }
     }
-
-    return data.filter((order) => order.OrderStatus === selectedStatus.value);
-  }, [data, selectedStatus]);
+  }, [tableSortBy]);
 
   return (
     <div className="d-block">
       {data && data.length > 0 ? (
         <>
-          <div className="mb-3">
-            <Select
-              options={statusOptions}
-              value={selectedStatus}
-              onChange={handleStatusChange}
-              isClearable
-              placeholder="Select status"
-            />
-          </div>
           <table {...getTableProps()} className="table">
             <thead>
               {headerGroups.map((headerGroup) => (
                 <tr {...headerGroup.getHeaderGroupProps()}>
                   {headerGroup.headers.map((column) => (
-                    <th {...column.getHeaderProps()}>
+                    <th
+                      {...column.getHeaderProps(
+                        column.disableSortBy
+                          ? {}
+                          : column.getSortByToggleProps()
+                      )}
+                    >
                       {column.render("Header")}
+                      {!column.disableSortBy && (
+                        <span>
+                          {column.isSorted ? (
+                            column.isSortedDesc ? (
+                              " ⏷"
+                            ) : (
+                              " ⏶"
+                            )
+                          ) : (
+                            <button
+                              className="btn btn-link btn-sm"
+                              onClick={() =>
+                                setSortBy({ column: column.id, desc: false })
+                              }
+                            >
+                              ⏷⏶
+                            </button>
+                          )}
+                        </span>
+                      )}
                     </th>
                   ))}
                 </tr>

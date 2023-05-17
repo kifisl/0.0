@@ -4,7 +4,7 @@ import AdminSidebar from "@/components/admin_components/adminSidebar";
 import AuthAdmin from "@/components/HOC/AuthAdmin";
 
 export const getServerSideProps = async (context) => {
-  console.log(context.query.id);
+  
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BACK_DOMAIN}/v1/product/getById`,
     {

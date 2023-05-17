@@ -80,7 +80,7 @@ class orderController {
           OrderStatus: Number.parseInt(status),
         },
       });
-      res.status(200).json({ updOrder });
+      await res.status(200).json({ updOrder });
     } catch (e) {
       res.status(400).json({ error: e.message });
     }
@@ -88,7 +88,7 @@ class orderController {
 
   async getOrderByID(req, res) {
     try {
-      let orderID = req.params.orderID;
+      let orderID = req.body.id;
       const order = await conn.orders.findFirst({
         where: {
           OrderID: Number.parseInt(orderID),
@@ -103,6 +103,13 @@ class orderController {
                   ProductPrice: true,
                 },
               },
+            },
+          },
+          address: {
+            select: {
+              Country: true,
+              City: true,
+              Address: true,
             },
           },
         },

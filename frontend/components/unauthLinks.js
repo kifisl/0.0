@@ -5,18 +5,18 @@ const Unauthlinks = () => {
   const router = useRouter();
 
   return (
-    <>
-      <li className="nav-item">
+    <div className="d-flex ">
+      <li className="list-unstyled">
         <Link legacyBehavior href="/login">
-          <a className="nav-link activate">Sign in</a>
+          <button className="btn btn-outline-light me-2">Sign in</button>
         </Link>
       </li>
-      <li className="nav-item">
+      <li className="list-unstyled">
         <Link legacyBehavior href="/registration">
-          <a className="nav-link activate">Sign up</a>
+          <button className="btn btn-outline-light me-2">Sign up</button>
         </Link>
       </li>
-    </>
+    </div>
   );
 };
 
