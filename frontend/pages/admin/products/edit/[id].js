@@ -102,7 +102,7 @@ const Edit = ({ data }) => {
             }}
           >
             <img
-              src={"http://localhost:5000/" + data.product.ProductImage}
+              src={"https://NODE-YAD:5000/" + data.product.ProductImage}
               width={200}
               height={100}
             />

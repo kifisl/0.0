@@ -9,6 +9,6 @@ router.get("/", orderController.getUserOrders);
 router.get("/delivery/getAll", orderController.getAllOrders);
 router.post("/pay", paymentController.createOrder);
 router.put("/delivery/:orderID/:status", orderController.changeStatus);
-router.post("/webhook", orderController.webhook);
+router.get("/deleteRedirect", orderController.deleteAndRedirect);
 
 module.exports = router;

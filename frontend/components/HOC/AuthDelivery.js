@@ -6,7 +6,8 @@ import { useContext } from "react";
 
 const AuthDelivery = (Component) => {
   const WithAuth = (props) => {
-    const { isDeliveryUser, setIsDeliveryUser } = useContext(AuthContext);
+    const { isDeliveryUser, setIsDeliveryUser, setRole } =
+      useContext(AuthContext);
 
     useEffect(() => {
       const checkAuthentication = async () => {
@@ -21,6 +22,7 @@ const AuthDelivery = (Component) => {
           console.log(content.user);
           if (isDelivery(content.user)) {
             setIsDeliveryUser(true);
+            setRole(content.user.role);
           } else {
             return Router.replace("/");
           }

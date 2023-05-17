@@ -6,7 +6,7 @@ import { useContext } from "react";
 
 const AuthAdmin = (Component) => {
   const WithAuth = (props) => {
-    const { isAdminUser, setIsAdminUser } = useContext(AuthContext);
+    const { isAdminUser, setIsAdminUser, setRole } = useContext(AuthContext);
 
     useEffect(() => {
       const checkAuthentication = async () => {
@@ -21,6 +21,7 @@ const AuthAdmin = (Component) => {
           console.log(content.user);
           if (isAdmin(content.user)) {
             setIsAdminUser(true);
+            setRole(content.user.role);
           } else {
             return Router.replace("/");
           }

@@ -55,7 +55,7 @@ const DefaultLayout = (props) => {
         <div className="container-fluid">
           <Link legacyBehavior href="/">
             <img
-              src={"http://localhost:5000/PARADISE_2.png"}
+              src={"https://NODE-YAD:5000/PARADISE_2.png"}
               alt="PARADISE"
               className={styles.logoimg}
             />
@@ -104,7 +104,7 @@ const DefaultLayout = (props) => {
               className="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none"
             >
               <img
-                src={"http://localhost:5000/PARADISE_2.png"}
+                src={"https://NODE-YAD:5000/PARADISE_2.png"}
                 alt="PARADISE"
                 className={styles.logoimg}
               />
@@ -130,6 +130,11 @@ const DefaultLayout = (props) => {
                       Orders
                     </a>
                   </li>
+                  <li>
+                    <a href="/chat" className="nav-link px-2 text-white">
+                      Chat
+                    </a>
+                  </li>
                 </>
               )}
             </ul>
@@ -153,7 +158,7 @@ const DefaultLayout = (props) => {
               </div>
             </form>
 
-            <div class="text-end">
+            <div className="text-end">
               {!authenticated ? (
                 <Unauthlinks />
               ) : (

@@ -3,7 +3,6 @@ import AdminSidebar from "@/components/admin_components/adminSidebar";
 import ProductTable from "@/components/admin_components/productTable";
 import { BsFillTrashFill, BsPencil } from "react-icons/bs";
 import Link from "next/link";
-import Adminlayout from "@/components/layouts/adminLayout";
 import Modalwindow from "@/components/modalWindow";
 import AuthAdmin from "@/components/HOC/AuthAdmin";
 
@@ -103,7 +102,7 @@ const Products = ({ data }) => {
       <div className="d-flex justify-content-center">
         <ProductTable columns={columns} data={products} />
       </div>
-      
+
       <Modalwindow
         show={showState}
         toggleModal={closeModal}

@@ -87,6 +87,16 @@ class UserController {
       next(e);
     }
   }
+
+  async getByID(req, res, next) {
+    try {
+      let userID = req.cookies.userID;
+      const user = await userService.getUserByID(userID);
+      return res.json(user);
+    } catch (e) {
+      next(e);
+    }
+  }
 }
 
 module.exports = new UserController();

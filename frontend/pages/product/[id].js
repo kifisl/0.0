@@ -115,7 +115,7 @@ const Id = ({ data, comments }) => {
         <div className="d-flex justify-content-around">
           <div className={styles.part_img_div}>
             <img
-              src={"http://localhost:5000/" + data.product.ProductImage}
+              src={"https://NODE-YAD:5000/" + data.product.ProductImage}
               alt=""
               width={300}
               height={199}

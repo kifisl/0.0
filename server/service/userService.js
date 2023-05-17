@@ -121,9 +121,17 @@ class UserService {
   }
 
   async getAllUsers() {
-    console.log("userservice getall");
     const users = await conn.users.findMany();
     return users;
+  }
+
+  async getUserByID(id) {
+    const user = await conn.users.findFirst({
+      where: {
+        UserID: Number.parseInt(id),
+      },
+    });
+    return user;
   }
 }
 
