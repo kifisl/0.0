@@ -4,7 +4,6 @@ import AdminSidebar from "@/components/admin_components/adminSidebar";
 import AuthAdmin from "@/components/HOC/AuthAdmin";
 
 export const getServerSideProps = async (context) => {
-  
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BACK_DOMAIN}/v1/product/getById`,
     {
@@ -60,7 +59,7 @@ const Edit = ({ data }) => {
   return (
     <AdminSidebar>
       <div className="d-flex justify-content-center">
-        <form onSubmit={submit} encType={"multipart/form-data"} id="formEl">
+        <form onSubmit={submit} encType={"multi/form-data"} id="formEl">
           <h1>Update product</h1>
           <label htmlFor="updateName">Name</label>
           <input
@@ -102,7 +101,7 @@ const Edit = ({ data }) => {
             }}
           >
             <img
-              src={"https://NODE-YAD:5000/" + data.product.ProductImage}
+              src={"http://localhost:5000/" + data.product.ProductImage}
               width={200}
               height={100}
             />
@@ -126,4 +125,4 @@ const Edit = ({ data }) => {
   );
 };
 
-export default AuthAdmin(Edit);
+export default Edit;

@@ -3,7 +3,7 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 
 const Modalwindow = ({ show, toggleModal, id, onProductDeleted }) => {
   const deleteHandle = async (id) => {
-    const response = await fetch(`https://yad:3000/v1/product/delete`, {
+    const response = await fetch(`http://localhost:3000/v1/product/delete`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

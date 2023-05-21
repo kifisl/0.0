@@ -38,8 +38,8 @@ const createOrder = async (req, res) => {
       payment_method_types: ["card"],
       line_items: lineItems,
       mode: "payment",
-      success_url: "https://yad:3000/orders", // URL страницы после успешной оплаты
-      cancel_url: "https://NODE-YAD:5000/api/order/deleteRedirect", // URL страницы после отмены оплаты
+      success_url: "http://localhost:3000/orders", // URL страницы после успешной оплаты
+      cancel_url: "http://localhost:5000/api/order/deleteRedirect", // URL страницы после отмены оплаты
     });
 
     const addressNew = await conn.address.create({
@@ -83,7 +83,6 @@ const createOrder = async (req, res) => {
       },
     });
 
-    console.log(session.url);
     res.send(session.url);
   } catch (error) {
     console.error("Error creating order:", error);

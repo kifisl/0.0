@@ -18,7 +18,6 @@ const AuthAdmin = (Component) => {
         const content = await tokenAuthenticate(token);
 
         if (content && content.user) {
-          console.log(content.user);
           if (isAdmin(content.user)) {
             setIsAdminUser(true);
             setRole(content.user.role);

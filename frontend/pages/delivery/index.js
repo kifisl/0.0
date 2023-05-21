@@ -4,9 +4,10 @@ import AuthDelivery from "@/components/HOC/AuthDelivery";
 import WebSock from "@/components/webSocket";
 
 const Index = () => {
+  let user = "DELIVERY";
   return (
     <DeliverySidebar>
-      <WebSock role={2} />
+      <WebSock username={user} />
     </DeliverySidebar>
   );
 };

@@ -19,7 +19,6 @@ const AuthDelivery = (Component) => {
         const content = await tokenAuthenticate(token);
 
         if (content && content.user) {
-          console.log(content.user);
           if (isDelivery(content.user)) {
             setIsDeliveryUser(true);
             setRole(content.user.role);

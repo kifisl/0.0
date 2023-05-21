@@ -23,24 +23,23 @@ import { useContext } from "react";
 //   };
 // };
 
-const WebSock = ({ role }) => {
+const WebSock = ({ username }) => {
   const [messages, setMessages] = useState([]);
   const [value, setValue] = useState("");
   const socket = useRef();
   const [connected, setConnected] = useState(false);
-  const [username, setUsername] = useState("");
+  // const [username, setUsername] = useState("");
   const { data } = useContext(AuthContext);
   function connect() {
     socket.current = new WebSocket("ws://localhost:4000");
 
-    console.log("data: " + data);
-    if (role && role == 0) {
-      setUsername("USER");
-    } else if (role && role == 1) {
-      setUsername("ADMIN");
-    } else if (role && role == 2) {
-      setUsername("DELIVERY");
-    }
+    // if (role && role == 0) {
+    //   setUsername("USER");
+    // } else if (role && role == 1) {
+    //   setUsername("ADMIN");
+    // } else if (role && role == 2) {
+    //   setUsername("DELIVERY");
+    // }
 
     socket.current.onopen = () => {
       setConnected(true);

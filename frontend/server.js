@@ -11,6 +11,7 @@ const handle = app.getRequestHandler();
 const httpsOptions = {
   key: fs.readFileSync(path.resolve("./res-sea.key")),
   cert: fs.readFileSync(path.resolve("./res-sea.crt")),
+  ca: [fs.readFileSync(path.resolve("./ca-sad.crt"))]
 };
 
 app.prepare().then(() => {
@@ -21,6 +22,6 @@ app.prepare().then(() => {
     if (err) {
       throw err;
     }
-    console.log("Ready on https://yad:3000");
+    console.log("Ready on https://localhost:3000");
   });
 });

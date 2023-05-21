@@ -58,10 +58,11 @@ const OrderTable = ({ columns, data }) => {
         <>
           <table {...getTableProps()} className="table">
             <thead>
-              {headerGroups.map((headerGroup) => (
-                <tr {...headerGroup.getHeaderGroupProps()}>
-                  {headerGroup.headers.map((column) => (
+              {headerGroups.map((headerGroup, i) => (
+                <tr key={i} {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map((column, i) => (
                     <th
+                      key={i}
                       {...column.getHeaderProps(
                         column.disableSortBy
                           ? {}
@@ -98,10 +99,12 @@ const OrderTable = ({ columns, data }) => {
               {page.map((row, i) => {
                 prepareRow(row);
                 return (
-                  <tr {...row.getRowProps()}>
-                    {row.cells.map((cell) => {
+                  <tr key={i} {...row.getRowProps()}>
+                    {row.cells.map((cell, i) => {
                       return (
-                        <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                        <td key={i} {...cell.getCellProps()}>
+                          {cell.render("Cell")}
+                        </td>
                       );
                     })}
                   </tr>

@@ -4,11 +4,11 @@ const nextConfig = {
   rewrites: async () => [
     {
       source: "/v1/:path*",
-      destination: "https://NODE-YAD:5000/api/:path*",
+      destination: "http://localhost:5000/api/:path*",
     },
     {
       source: "/v1/static/:path*",
-      destination: "https://NODE-YAD:5000/:path*",
+      destination: "http://localhost:5000/:path*",
     },
   ],
 };

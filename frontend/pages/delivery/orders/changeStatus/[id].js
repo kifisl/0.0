@@ -6,7 +6,6 @@ import DeliverySidebar from "@/components/delivery_components/deliverySidebar";
 
 export const getServerSideProps = async (context) => {
   let id = context.query.id;
-  console.log("ID" + id);
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BACK_DOMAIN}/v1/order/getByID`,
     {

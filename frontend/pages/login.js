@@ -42,6 +42,10 @@ const Login = () => {
           setIsDeliveryUser(false);
           return router.push("/");
         });
+      } else if (res.status == 400) {
+        res.json().then((data) => {
+          setErrorMessage(data.e);
+        });
       }
       res.json().then((data) => {
         setErrorMessage(data.error);

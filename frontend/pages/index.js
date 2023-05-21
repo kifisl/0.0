@@ -58,7 +58,7 @@ export const getServerSideProps = async ({ query }) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         offset: (currentPage - 1) * 6,
-        take: 6, // Количество продуктов на странице
+        take: 70, // Количество продуктов на странице
       }),
     }
   );
@@ -74,7 +74,7 @@ const Home = ({ data, currentPage }) => {
 
   useEffect(() => {
     const totalCount = data.totalCount;
-    const totalPages = Math.ceil(totalCount / 6); // Общее количество страниц (6 продуктов на странице)
+    const totalPages = Math.ceil(totalCount / 6);
     setTotalPages(totalPages);
   }, []);
 
@@ -84,45 +84,13 @@ const Home = ({ data, currentPage }) => {
 
   return (
     <DefaultLayout>
-      <Row>
-        <Col>
-          <div className="pagination-container">
-            {currentPage > 1 && (
-              <Link href={`/home?page=${currentPage - 1}`} passHref>
-                <Button variant="primary">Previous</Button>
-              </Link>
-            )}
-            {Array.from({ length: totalPages }, (_, index) => {
-              const pageNumber = index + 1;
-              return (
-                <Link key={index} href={`/home?page=${pageNumber}`} passHref>
-                  <Button
-                    variant={
-                      pageNumber === currentPage ? "primary" : "outline-primary"
-                    }
-                  >
-                    {pageNumber}
-                  </Button>
-                </Link>
-              );
-            })}
-            {currentPage < totalPages && (
-              <Link href={`/home?page=${currentPage + 1}`} passHref>
-                <Button variant="primary">Next</Button>
-              </Link>
-            )}
-          </div>
-        </Col>
-      </Row>
-      <Row>
-        <div className="d-flex flex-wrap">
-          {data.result.map((obj, i) => (
-            <Col key={i} xs={12} sm={6} md={4}>
-              <Product {...obj} />
-            </Col>
-          ))}
-        </div>
-      </Row>
+      <div className="d-flex flex-wrap">
+        {data.result.map((obj, i) => (
+          <Col key={i} xs={12} sm={6} md={4}>
+            <Product {...obj} />
+          </Col>
+        ))}
+      </div>
     </DefaultLayout>
   );
 };

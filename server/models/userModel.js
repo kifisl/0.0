@@ -3,7 +3,6 @@ class userModel {
     const result = conn.users.findUnique({
       where: { UserEmail: email },
     });
-    console.log(result.UserPassword);
     return result.UserPassword;
   }
 }

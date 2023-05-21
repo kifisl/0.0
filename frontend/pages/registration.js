@@ -4,6 +4,7 @@ import { useState } from "react";
 import DefaultLayout from "@/components/layouts/defaultLayout";
 import { AuthContext } from "@/lib/auth/AuthContext";
 import { useContext } from "react";
+import { saveTokenAndAuthenticate } from "@/lib/auth/auth-helpers";
 
 const Registration = () => {
   const [email, setEmail] = useState("");
@@ -11,7 +12,8 @@ const Registration = () => {
   const [passwordConf, setPasswordConf] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
-  const { setAuthenticated, setIsAdminUser } = useContext(AuthContext);
+  const { setAuthenticated, setIsAdminUser, setIsDeliveryUser } =
+    useContext(AuthContext);
 
   const submit = async (e) => {
     e.preventDefault();
@@ -28,12 +30,17 @@ const Registration = () => {
     }).then((res) => {
       if (res.status == 200) {
         setAuthenticated(true);
+        res.json().then(async (data) => {
+          await saveTokenAndAuthenticate(data.refreshToken);
+        });
         setIsAdminUser(false);
+        setIsDeliveryUser(false);
         return router.push("/activateinfo");
+      } else if (res.status == 400) {
+        res.json().then((data) => {
+          setErrorMessage(data.e);
+        });
       }
-      res.json().then((data) => {
-        setErrorMessage(data.error);
-      });
     });
   };
   return (

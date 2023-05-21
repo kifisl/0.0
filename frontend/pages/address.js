@@ -35,7 +35,6 @@ const AddressForm = () => {
 
     if (response.ok) {
       const redirectUrl = await response.text();
-      console.log(redirectUrl);
       router.push(redirectUrl);
     }
   };

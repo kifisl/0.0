@@ -16,7 +16,6 @@ class UserService {
     const candidate = await conn.users.findMany({
       where: { UserEmail: email },
     });
-    console.log(JSON.stringify(candidate));
     if (JSON.stringify(candidate) != "[]") {
       throw ApiError.BadRequest(
         `Пользователь с почтовым адресом ${email} уже существует`
@@ -39,7 +38,6 @@ class UserService {
     const userDto = new UserDto(user); //id, email, isActivated, role
     const tokens = tokenService.generateTokens({ ...userDto });
     await tokenService.saveToken(userDto.id, tokens.refreshToken);
-    console.log(userDto);
 
     return {
       ...tokens,
@@ -70,7 +68,6 @@ class UserService {
     const user = await conn.users.findFirst({
       where: { UserEmail: email },
     });
-    console.log(user);
 
     if (user == null) {
       throw ApiError.BadRequest(
@@ -78,7 +75,7 @@ class UserService {
       );
     }
     const isPassEquals = await bcrypt.compare(password, user.UserPassword);
-    console.log(isPassEquals);
+    
     if (!isPassEquals) {
       throw ApiError.BadRequest(`Неверный пароль`);
     }

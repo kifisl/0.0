@@ -41,9 +41,9 @@ const Product = (props) => {
       <Image
         width={200}
         height={133}
-        src={"https://NODE-YAD:5000/" + ProductImage}
+        src={"http://localhost:5000/" + ProductImage}
       />
-      <p>Price: {ProductPrice} BYN  </p>
+      <p>Price: {ProductPrice} BYN </p>
       <p>Weight: {ProductWeight}</p>
       <p>Description: {ProductShortDesc}</p>
       <div>

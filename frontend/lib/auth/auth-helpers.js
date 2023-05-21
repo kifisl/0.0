@@ -8,7 +8,6 @@ export const saveTokenAndAuthenticate = async (token) => {
   content = null;
   if (!content) {
     content = await tokenAuthenticate(token);
-    console.log(content);
   }
   if (content) {
     if (content && isAdmin(content.user)) {

@@ -51,51 +51,6 @@ const DefaultLayout = (props) => {
         <title>Paradise</title>
       </Head>
 
-      {/* <nav className="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
-        <div className="container-fluid">
-          <Link legacyBehavior href="/">
-            <img
-              src={"https://NODE-YAD:5000/PARADISE_2.png"}
-              alt="PARADISE"
-              className={styles.logoimg}
-            />
-          </Link>
-          <div className="d-flex align-items-center mx-auto">
-            <input
-              className="form-control custom-search-input"
-              type="text"
-              placeholder="Search products"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <button
-              className="btn btn-outline-light custom-search-button"
-              onClick={handleSearch}
-            >
-              <i className="bi bi-search"></i>
-            </button>
-          </div>
-
-          <div>
-            <ul className="navbar-nav me-auto mb-2 mb-md-0">
-              {!authenticated ? (
-                <Unauthlinks />
-              ) : (
-                <>
-                  {" "}
-                  <Link legacyBehavior href={`/basket`}>
-                    <button className="btn btn-outline-light my-2 my-sm-0">
-                      basket
-                    </button>
-                  </Link>
-                  <LogoutButton />
-                </>
-              )}
-            </ul>
-          </div>
-        </div>
-      </nav> */}
-
       <header className="p-3 bg-dark text-white">
         <div className="container">
           <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
@@ -104,7 +59,7 @@ const DefaultLayout = (props) => {
               className="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none"
             >
               <img
-                src={"https://NODE-YAD:5000/PARADISE_2.png"}
+                src={"http://localhost:5000/PARADISE_2.png"}
                 alt="PARADISE"
                 className={styles.logoimg}
               />

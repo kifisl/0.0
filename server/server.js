@@ -36,23 +36,24 @@ app.use(errorMiddleware);
 
 const start = async () => {
   try {
-    // const server = app.listen(PORT, () =>
-    //   console.log(`Server started on PORT=${PORT}`)
-    // );
-    // server.keepAliveTimeout = 30 * 1000;
-    // server.headersTimeout = 35 * 1000;
-    https
-      .createServer(
-        {
-          key: fs.readFileSync("./res-sea.key"),
-          cert: fs.readFileSync("./res-sea.crt"),
-          passphrase: "1234",
-        },
-        app
-      )
-      .listen(PORT, () => {
-        console.log(`start https on ${PORT}`);
-      });
+    const server = app.listen(PORT, () =>
+      console.log(`Server started on PORT=${PORT}`)
+    );
+    server.keepAliveTimeout = 30 * 1000;
+    server.headersTimeout = 35 * 1000;
+    // https
+    //   .createServer(
+    //     {
+    //       key: fs.readFileSync("./res-sea.key"),
+    //       cert: fs.readFileSync("./res-sea.crt"),
+    //       requestCert: true,
+    //       rejectUnauthorized: false,
+    //     },
+    //     app
+    //   )
+    //   .listen(PORT, () => {
+    //     console.log(`start https on ${PORT}`);
+    //   });
   } catch (e) {
     console.log(e);
   }

@@ -5,10 +5,10 @@ import styles from "../styles/Product.module.css";
 import WebSock from "@/components/webSocket";
 
 const Chat = () => {
-  let token = localStorage.getItem("token");
+  let user = "USER";
   return (
     <DefaultLayout>
-      <WebSock role={0} />
+      <WebSock username={user} />
     </DefaultLayout>
   );
 };

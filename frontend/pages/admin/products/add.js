@@ -23,7 +23,7 @@ const Add = () => {
     const content = await request.json();
     if (request.ok) {
       await router.push("/admin/products");
-      return alert("Part has been added");
+      return alert("Product has been added");
     }
     return alert("Wrong data");
   };
@@ -31,7 +31,7 @@ const Add = () => {
   return (
     <AdminSidebar>
       <div className="d-flex justify-content-center">
-        <form onSubmit={submit} encType="multipart/form-data" id="formEl">
+        <form onSubmit={submit} encType="multi/form-data" id="formEl">
           <h1>Add product</h1>
           <label htmlFor="name">Name</label>
           <input name="name" className="form-control" required />
@@ -50,7 +50,7 @@ const Add = () => {
             accept="image/*"
           />
           <button type="submit" className="btn btn-info">
-            Add part
+            Add product
           </button>
         </form>
       </div>

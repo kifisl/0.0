@@ -23,7 +23,7 @@ class UserController {
       res.cookie("userID", userData.user.id);
       return res.json(userData);
     } catch (e) {
-      next(e);
+      res.status(400).json({ e: e.message });
     }
   }
 
@@ -38,7 +38,7 @@ class UserController {
       res.cookie("userID", userData.user.id);
       return res.json(userData);
     } catch (e) {
-      next(e);
+      res.status(400).json({ e: e.message });
     }
   }
 
@@ -50,7 +50,7 @@ class UserController {
       res.clearCookie("userID");
       return res.json(token);
     } catch (e) {
-      next(e);
+      res.status(400).json({ e: e.message });
     }
   }
 
@@ -60,7 +60,7 @@ class UserController {
       await userService.activate(activationLink);
       return res.redirect(process.env.CLIENT_URL);
     } catch (e) {
-      next(e);
+      res.status(400).json({ e: e.message });
     }
   }
 
@@ -75,7 +75,7 @@ class UserController {
       res.cookie("userID", userData.user.id);
       return res.json(userData);
     } catch (e) {
-      next(e);
+      res.status(400).json({ e: e.message });
     }
   }
 
@@ -84,7 +84,7 @@ class UserController {
       const users = await userService.getAllUsers();
       res.json(users);
     } catch (e) {
-      next(e);
+      res.status(400).json({ e: e.message });
     }
   }
 
@@ -94,7 +94,7 @@ class UserController {
       const user = await userService.getUserByID(userID);
       return res.json(user);
     } catch (e) {
-      next(e);
+      res.status(400).json({ e: e.message });
     }
   }
 }

@@ -115,7 +115,7 @@ const Id = ({ data, comments }) => {
         <div className="d-flex justify-content-around">
           <div className={styles.part_img_div}>
             <img
-              src={"https://NODE-YAD:5000/" + data.product.ProductImage}
+              src={"http://localhost:5000/" + data.product.ProductImage}
               alt=""
               width={300}
               height={199}
@@ -125,12 +125,14 @@ const Id = ({ data, comments }) => {
             <h3>{data.product.ProductPrice + " BYN"}</h3>
             <p>{"Weight: " + data.product.ProductWeight + "g"}</p>
             <p>{data.product.ProductShortDesc}</p>
-            <button
-              onClick={() => addToBucket(data.product.ProductID)}
-              className={styles.product_button}
-            >
-              Add to bucket
-            </button>
+            {authenticated ? (
+              <button
+                onClick={() => addToBucket(data.product.ProductID)}
+                className={styles.product_button}
+              >
+                Add to bucket
+              </button>
+            ) : null}
           </div>
         </div>
         {authenticated ? (

@@ -15,7 +15,7 @@
     margin-left: 8px;
   }
   .mainpage{
-    background-image: url("https://NOde-yad:5000/background.jpg");
+    background-image: url("http://localhost:5000/background.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;

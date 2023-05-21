@@ -5,9 +5,10 @@ import styles from "../../styles/Product.module.css";
 import WebSock from "@/components/webSocket";
 
 const Index = () => {
+  let user = "ADMIN";
   return (
     <AdminSidebar>
-      <WebSock role={1} />
+      <WebSock username={user} />
     </AdminSidebar>
   );
 };

@@ -6,13 +6,13 @@ class productController {
     try {
       let name = req.body.name;
       let { price, weight, short_desc } = req.body;
-      console.log("name: " + name);
-      console.log("price: " + price);
-      console.log("weight: " + weight);
-      console.log("short_desc: " + short_desc);
+      // console.log("name: " + name);
+      // console.log("price: " + price);
+      // console.log("weight: " + weight);
+      // console.log("short_desc: " + short_desc);
       let fileName;
-      console.log(req.body);
-      console.log(req.headers);
+      // console.log(req.body);
+      // console.log(req.headers);
       if (req.file) {
         fileName = req.file.filename;
       }

@@ -25,7 +25,6 @@ const SearchResults = () => {
         );
 
         const data = await response.json();
-        console.log("data", data);
         setSearchResults(data.result);
         setIsLoading(false);
       } catch (error) {

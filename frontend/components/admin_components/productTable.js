@@ -26,10 +26,12 @@ const ProductTable = ({ columns, data }) => {
     <div className="d-block">
       <table {...getTableProps()} className="table">
         <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps()}>{column.render("Header")}</th>
+          {headerGroups.map((headerGroup, index) => (
+            <tr key={index} {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((column, index) => (
+                <th key={index} {...column.getHeaderProps()}>
+                  {column.render("Header")}
+                </th>
               ))}
             </tr>
           ))}
@@ -38,10 +40,12 @@ const ProductTable = ({ columns, data }) => {
           {page.map((row, i) => {
             prepareRow(row);
             return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => {
+              <tr key={i} {...row.getRowProps()}>
+                {row.cells.map((cell, i) => {
                   return (
-                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                    <td key={i} {...cell.getCellProps()}>
+                      {cell.render("Cell")}
+                    </td>
                   );
                 })}
               </tr>
@@ -58,7 +62,7 @@ const ProductTable = ({ columns, data }) => {
           {"⏴"}
         </button>
         <Link href="/admin/products/add" passHref>
-          <button className="btn btn-primary ">Add part</button>
+          <button className="btn btn-primary ">Add product</button>
         </Link>
         <button
           className="btn btn-primary mr-3"
